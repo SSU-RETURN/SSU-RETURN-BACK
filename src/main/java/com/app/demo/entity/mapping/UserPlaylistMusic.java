@@ -1,5 +1,8 @@
-package com.app.demo.entity;
+package com.app.demo.entity.mapping;
 
+import com.app.demo.entity.User;
+import com.app.demo.entity.Music;
+import com.app.demo.entity.UserPlaylist;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,8 +26,8 @@ public class UserPlaylistMusic {
     private UserPlaylist userPlaylist;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")

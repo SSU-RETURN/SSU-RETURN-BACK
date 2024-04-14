@@ -20,8 +20,8 @@ public class RecentSearch {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", updatable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", updatable = false)
+    private User user;
 
     @Column(name = "date")
     private LocalDateTime date;

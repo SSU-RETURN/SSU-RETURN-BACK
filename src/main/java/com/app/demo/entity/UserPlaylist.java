@@ -1,5 +1,7 @@
 package com.app.demo.entity;
 
+import com.app.demo.entity.enums.Emotion;
+import com.app.demo.entity.mapping.UserPlaylistMusic;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,20 +25,20 @@ public class UserPlaylist {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", updatable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", updatable = false)
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id", updatable = false)
     private Diary diary;
 
-    @Column(name = "member_emotion")
-    private Emotion memberEmotion;
+    @Column(name = "user_emotion")
+    private Emotion userEmotion;
 
     @PostLoad
     private void loadMemberEmotion() {
         if (diary != null) {
-            memberEmotion = diary.getMemberEmotion();
+            userEmotion = diary.getUserEmotion();
         }
     }
 

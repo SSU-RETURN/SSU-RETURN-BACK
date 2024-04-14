@@ -1,5 +1,7 @@
 package com.app.demo.entity;
 
+import com.app.demo.entity.enums.Emotion;
+import com.app.demo.entity.mapping.AIPlaylistMusic;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,8 +24,8 @@ public class AIPlaylist {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", updatable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", updatable = false)
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id", updatable = false)

@@ -1,4 +1,4 @@
-package com.app.demo.entity;
+package com.app.demo.entity.enums;
 
 public enum Emotion {
     SAD,

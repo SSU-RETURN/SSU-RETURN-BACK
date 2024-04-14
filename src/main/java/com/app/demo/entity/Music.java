@@ -1,6 +1,9 @@
 package com.app.demo.entity;
 
 
+import com.app.demo.entity.mapping.AIPlaylistMusic;
+import com.app.demo.entity.mapping.PreferencePlaylistMusic;
+import com.app.demo.entity.mapping.UserPlaylistMusic;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,5 +1,6 @@
 package com.app.demo.entity;
 
+import com.app.demo.entity.mapping.PreferencePlaylistMusic;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,8 @@ public class PreferencePlaylist {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", updatable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", updatable = false)
+    private User user;
 
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "preferencePlaylist")
     private List<PreferencePlaylistMusic> preferencePlaylistMusicList;

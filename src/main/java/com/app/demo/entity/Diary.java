@@ -1,5 +1,6 @@
 package com.app.demo.entity;
 
+import com.app.demo.entity.enums.Emotion;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -23,8 +24,8 @@ public class Diary {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", referencedColumnName = "member_id", nullable = false)
-    private Member member;
+    @JoinColumn(name = "user_id", referencedColumnName = "member_id", nullable = false)
+    private User userId;
 
     @Column(nullable = false)
     private String title;
@@ -33,8 +34,8 @@ public class Diary {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "member_emotion")
-    private Emotion memberEmotion;
+    @Column(name = "user_emotion")
+    private Emotion userEmotion;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ai_emotion")
@@ -50,5 +51,5 @@ public class Diary {
     private List<AIPlaylist> aiPlaylistList = new ArrayList<>();
 
     @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "diary")
-    private List<UserPlaylist> memberPlaylistList = new ArrayList<>();
+    private List<UserPlaylist> userPlaylistList = new ArrayList<>();
 }
