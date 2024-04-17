@@ -29,6 +29,7 @@ public class AIPlaylist {
     @JoinColumn(name = "diary_id", updatable = false)
     private Diary diary;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "ai_emotion")
     private Emotion aiEmotion;
 
