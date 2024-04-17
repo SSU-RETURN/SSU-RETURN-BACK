@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "ai_playlist")
+@Table(name = "member_playlist")
 
-public class AIPlaylist {
+public class MemberPlaylist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ai_Playlist_id")
+    @Column(name = "member_playlist_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,18 +29,18 @@ public class AIPlaylist {
     @JoinColumn(name = "diary_id", updatable = false)
     private Diary diary;
 
-    @Column(name = "ai_emotion")
-    private Emotion aiEmotion;
+    @Column(name = "member_emotion")
+    private Emotion memberEmotion;
+
+    @PostLoad
+    private void loadMemberEmotion() {
+        if (diary != null) {
+            memberEmotion = diary.getMemberEmotion();
+        }
+    }
 
     @Column(name = "playlist_date")
     private LocalDateTime playlistDate;
-
-    @PostLoad
-    private void loadAiEmotion() {
-        if (diary != null) {
-            aiEmotion = diary.getAiEmotion();
-        }
-    }
 
 }
 

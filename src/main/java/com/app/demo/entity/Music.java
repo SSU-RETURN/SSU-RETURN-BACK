@@ -3,21 +3,20 @@ package com.app.demo.entity;
 
 import com.app.demo.entity.mapping.AIPlaylistMusic;
 import com.app.demo.entity.mapping.PreferencePlaylistMusic;
-import com.app.demo.entity.mapping.UserPlaylistMusic;
+import com.app.demo.entity.mapping.MemberPlaylistMusic;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@RequiredArgsConstructor
 @Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "music")
 public class Music {
     @Id
@@ -33,17 +32,5 @@ public class Music {
 
     @Column(name = "picture_key", length = 200, nullable = false)
     private String picture_key;
-
-
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "music")
-    private final List<AIPlaylistMusic> aiPlaylistMusicList = new ArrayList<>();
-
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "music")
-    private final List<UserPlaylistMusic> userPlaylistMusicList = new ArrayList<>();
-
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "music")
-    private final List<PreferencePlaylistMusic> preferencePlaylistMusicList = new ArrayList<>();
-
-
 
 }

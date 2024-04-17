@@ -1,32 +1,31 @@
 package com.app.demo.entity;
 
-import com.app.demo.entity.mapping.PreferencePlaylistMusic;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Date;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
-@Table(name = "preferencePlaylist")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "preference_playlist")
 public class PreferencePlaylist {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "preferencePlaylist_id")
+    @Column(name = "preference_playlist_id")
     private Long id;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", updatable = false)
-    private User user;
+    @JoinColumn(name = "member_id", updatable = false)
+    private Member member;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "preferencePlaylist")
-    private List<PreferencePlaylistMusic> preferencePlaylistMusicList;
+    @Column(name = "last_update_date")
+    private LocalDateTime lastUpdateDate;
 
 }

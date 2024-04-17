@@ -1,17 +1,15 @@
 package com.app.demo.entity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "RecentSearch")
 public class RecentSearch {
     @Id
@@ -20,12 +18,12 @@ public class RecentSearch {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", updatable = false)
-    private User user;
+    @JoinColumn(name = "member_id", updatable = false)
+    private Member member;
 
-    @Column(name = "date")
-    private LocalDateTime date;
+    @Column(name = "search_date")
+    private LocalDateTime searchDate;
 
-    @Column(name = "searchData", nullable = false, length = 50)
+    @Column(name = "search_data", nullable = false, length = 50)
     private String searchData;
 }

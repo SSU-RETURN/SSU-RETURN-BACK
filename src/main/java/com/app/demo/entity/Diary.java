@@ -3,20 +3,18 @@ package com.app.demo.entity;
 import com.app.demo.entity.enums.Emotion;
 import jakarta.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
-@Table(name = "Diary")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "diary")
 public class Diary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +22,15 @@ public class Diary {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "member_id", nullable = false)
-    private User userId;
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
 
-    @Column(nullable = false)
-    private String title;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 500)
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "user_emotion")
-    private Emotion userEmotion;
+    @Column(name = "member_emotion")
+    private Emotion memberEmotion;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ai_emotion")
@@ -44,12 +39,7 @@ public class Diary {
     @Column(name = "picture_key", length = 200, nullable = true)
     private String pictureKey;
 
-    @Column(name = "date")
-    private LocalDateTime date;
+    @Column(name = "written_date")
+    private LocalDateTime writtenDate;
 
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "diary")
-    private List<AIPlaylist> aiPlaylistList = new ArrayList<>();
-
-    @OneToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "diary")
-    private List<UserPlaylist> userPlaylistList = new ArrayList<>();
 }
