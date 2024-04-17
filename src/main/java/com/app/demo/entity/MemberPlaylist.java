@@ -29,6 +29,7 @@ public class MemberPlaylist {
     @JoinColumn(name = "diary_id", updatable = false)
     private Diary diary;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "member_emotion")
     private Emotion memberEmotion;
 
