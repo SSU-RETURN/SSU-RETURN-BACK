@@ -37,6 +37,12 @@ spring:
           auto: update
         default_batch_fetch_size: 1000
         dialect: org.hibernate.dialect.MariaDB53Dialect
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.project.devcenter.domain
+
 ---
 # Dev Profile
 spring:
