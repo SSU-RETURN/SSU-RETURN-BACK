@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -40,6 +41,14 @@ public class Diary {
     private String pictureKey;
 
     @Column(name = "written_date")
-    private LocalDateTime writtenDate;
+    private LocalDate writtenDate;
+
+    @OneToOne
+    @Column(name = "ai_playlist")
+    private AIPlaylist aiPlaylist;
+
+    @OneToOne
+    @JoinColumn(name = "member_playlist")
+    private MemberPlaylist memberPlaylist;
 
 }
