@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())  // CSRF 보호 비활성화
                 .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Swagger UI 접근 허용
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/**").permitAll()  // Swagger UI 접근 허용
                         .anyRequest().authenticated());  // 나머지 요청은 인증 필요
         return http.build();
     }
