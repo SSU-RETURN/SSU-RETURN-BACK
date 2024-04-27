@@ -31,6 +31,6 @@ public class Music {
     private String artist;
 
     @Column(name = "picture_key", length = 200, nullable = false)
-    private String picture_key;
+    private String pictureKey;
 
 }
