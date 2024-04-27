@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -91,14 +92,18 @@ public class MusicServiceImpl implements MusicService {
     public List<Music> saveMusic(MusicRequestDTO.SaveMusicDTO request) {
         List<Music> savedMusics = new ArrayList<>();
         for (MusicRequestDTO.MusicContentDTO musicInfo : request.getMusics()){
-            Music music = Music.builder()
-                    .title(musicInfo.getTitle())
-                    .artist(musicInfo.getArtist())
-                    .pictureKey(musicInfo.getPictureKey())
-                    .build();
+            Optional<Music> existingMusic = musicRepository.findByTitleAndArtist(musicInfo.getTitle(), musicInfo.getArtist());
 
-            musicRepository.save(music);
-            savedMusics.add(music);
+            if(existingMusic.isEmpty()) {
+                Music music = Music.builder()
+                        .title(musicInfo.getTitle())
+                        .artist(musicInfo.getArtist())
+                        .pictureKey(musicInfo.getPictureKey())
+                        .build();
+
+                musicRepository.save(music);
+                savedMusics.add(music);
+            }
         }
 
         return savedMusics;
