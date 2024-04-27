@@ -4,7 +4,6 @@ import com.app.demo.entity.enums.Emotion;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,8 +33,15 @@ public class MemberPlaylist {
     @Column(name = "member_emotion")
     private Emotion memberEmotion;
 
+    @PostLoad
+    private void loadMemberEmotion() {
+        if (diary != null) {
+            memberEmotion = diary.getMemberEmotion();
+        }
+    }
+
     @Column(name = "playlist_date")
-    private LocalDate playlistDate;
+    private LocalDateTime playlistDate;
 
 }
 

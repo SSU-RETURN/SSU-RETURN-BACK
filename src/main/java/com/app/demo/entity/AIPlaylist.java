@@ -4,7 +4,6 @@ import com.app.demo.entity.enums.Emotion;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -35,7 +34,14 @@ public class AIPlaylist {
     private Emotion aiEmotion;
 
     @Column(name = "playlist_date")
-    private LocalDate playlistDate;
+    private LocalDateTime playlistDate;
+
+    @PostLoad
+    private void loadAiEmotion() {
+        if (diary != null) {
+            aiEmotion = diary.getAiEmotion();
+        }
+    }
 
 }
 
