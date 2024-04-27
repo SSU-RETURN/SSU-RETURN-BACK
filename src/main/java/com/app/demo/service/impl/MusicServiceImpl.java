@@ -1,7 +1,9 @@
 package com.app.demo.service.impl;
 
+import com.app.demo.dto.request.MusicRequestDTO;
 import com.app.demo.dto.response.MusicResponseDTO;
 import com.app.demo.entity.Music;
+import com.app.demo.repository.MusicRepository;
 import com.app.demo.service.MusicService;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.enums.ModelObjectType;
@@ -34,15 +36,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class MusicServiceImpl implements MusicService {
+
+    private final MusicRepository musicRepository;
+
     SpotifyApi spotifyApi = new SpotifyApi.Builder()
             .setClientId(System.getenv("SPOTIFY_CLIENT_ID"))
             .setClientSecret(System.getenv("SPOTIFY_CLIENT_SECRET"))
             .build();
 
-    @Override
-    public Music getMusicFromApi() {
-        return null;
-    }
 
     @Override
     public String getAccessToken() {
@@ -59,9 +60,9 @@ public class MusicServiceImpl implements MusicService {
     }
 
     @Override
-    public List<MusicResponseDTO.SearchResponseDTO> searchMusic(String keyword, int page) {
+    public List<MusicResponseDTO.MusicSearchContentDTO> searchMusic(String keyword, int page) {
         getAccessToken();
-        List<MusicResponseDTO.SearchResponseDTO> searchResponseDtoList = new ArrayList<>();
+        List<MusicResponseDTO.MusicSearchContentDTO> searchResponseDTOList = new ArrayList<>();
         try {
             SearchTracksRequest searchTrackRequest = spotifyApi.searchTracks(keyword)
                     .limit(10)
@@ -72,16 +73,34 @@ public class MusicServiceImpl implements MusicService {
             Track[] tracks = searchResult.getItems();
 
             for (Track track : tracks) {
-                searchResponseDtoList.add(MusicResponseDTO.SearchResponseDTO.builder()
+                searchResponseDTOList.add(MusicResponseDTO.MusicSearchContentDTO.builder()
                         .title(track.getName())
-                        .artistName(track.getArtists()[0].getName())
-                        .imageUrl(track.getAlbum().getImages().length > 0 ? track.getAlbum().getImages()[0].getUrl() : "NO_IMAGE")
+                        .artist(track.getArtists()[0].getName())
+                        .pictureKey(track.getAlbum().getImages().length > 0 ? track.getAlbum().getImages()[0].getUrl() : "NO_IMAGE")
                         .build());
             }
 
         } catch (IOException | SpotifyWebApiException | ParseException e) {
             log.info("Error: " + e.getMessage());
         }
-        return searchResponseDtoList;
+        return searchResponseDTOList;
+    }
+
+    @Override
+    @Transactional
+    public List<Music> saveMusic(MusicRequestDTO.SaveMusicDTO request) {
+        List<Music> savedMusics = new ArrayList<>();
+        for (MusicRequestDTO.MusicContentDTO musicInfo : request.getMusics()){
+            Music music = Music.builder()
+                    .title(musicInfo.getTitle())
+                    .artist(musicInfo.getArtist())
+                    .pictureKey(musicInfo.getPictureKey())
+                    .build();
+
+            musicRepository.save(music);
+            savedMusics.add(music);
+        }
+
+        return savedMusics;
     }
 }
