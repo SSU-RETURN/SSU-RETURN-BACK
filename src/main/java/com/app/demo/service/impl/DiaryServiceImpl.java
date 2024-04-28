@@ -38,7 +38,7 @@ public class DiaryServiceImpl implements DiaryService {
 
     @Override
     public Diary createDiary(DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
-        Member member = memberRepository.findById(requestDTO.getMemberId());
+        Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
         Emotion aiEmotion = extractAiEmotion(requestDTO.getContent());
         //List<Long> musicList = requestDTO.getMusicList;
 
