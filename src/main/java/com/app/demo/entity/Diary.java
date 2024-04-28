@@ -44,7 +44,7 @@ public class Diary {
     private LocalDate writtenDate;
 
     @OneToOne
-    @Column(name = "ai_playlist")
+    @JoinColumn(name = "ai_playlist")
     private AIPlaylist aiPlaylist;
 
     @OneToOne
