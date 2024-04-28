@@ -45,13 +45,11 @@ public class Diary {
     @Column(name = "written_date")
     private LocalDate writtenDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "ai_playlist")
     private AIPlaylist aiPlaylist;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "member_playlist")
     private MemberPlaylist memberPlaylist;
 
