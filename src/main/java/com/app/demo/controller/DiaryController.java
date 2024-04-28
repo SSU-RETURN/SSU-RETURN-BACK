@@ -97,9 +97,9 @@ public class DiaryController {
     @Operation(summary = "월별일기조회", description = "월별일기조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @PostMapping("/get-by-month/{memberId}")
-    public BaseResponse<List<DiaryResponseDTO.MonthlyDiaryDTO>> getDiariesByMonth(@PathVariable Member member, @RequestParam(name = "YearMonth") LocalDate yearMonth){
+    public BaseResponse<List<DiaryResponseDTO.MonthlyDiaryDTO>> getDiariesByMonth(@PathVariable Long memberId, @RequestParam(name = "YearMonth") LocalDate yearMonth){
 
-        List<Diary> diaries = diaryService.getDiariesByMonth(member, yearMonth);
+        List<Diary> diaries = diaryService.getDiariesByMonth(memberId, yearMonth);
         List<DiaryResponseDTO.MonthlyDiaryDTO> responseDTOList = diaries.stream()
                 .map(DiaryConverter::toMonthlyDiaryDTO)
                 .collect(Collectors.toList());

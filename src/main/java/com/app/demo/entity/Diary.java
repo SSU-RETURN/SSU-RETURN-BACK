@@ -25,8 +25,11 @@ public class Diary {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member")
     private Member member;
+
+    @Column(name = "member_id")
+    private Long memberId;
 
     @Column(length = 500)
     private String content;

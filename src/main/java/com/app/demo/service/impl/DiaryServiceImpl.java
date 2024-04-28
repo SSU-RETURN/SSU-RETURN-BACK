@@ -55,11 +55,12 @@ public class DiaryServiceImpl implements DiaryService {
         //.musicList(musicList)
         Diary diary = Diary.builder()
                 .member(member)
+                .memberId(requestDTO.getMemberId())
                 .content(requestDTO.getContent())
                 .memberEmotion(requestDTO.getMemberEmotion())
                 .aiEmotion(aiEmotion)
                 .pictureKey(requestDTO.getPictureKey())
-                .writtenDate(getLocalDate())
+                .writtenDate(requestDTO.getWrittenDate())
                 .aiPlaylist(aiPlaylist)
                 .memberPlaylist(memberPlaylist)
                 .build();
@@ -101,10 +102,10 @@ public class DiaryServiceImpl implements DiaryService {
         diaryRepository.deleteById(diaryId);
     }
 
-    public List<Diary> getDiariesByMonth(Member member, LocalDate yearMonth) {
+    public List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth) {
         LocalDate startDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
-        return diaryRepository.findByMemberAndWrittenDateBetween(member, startDate, endDate);
+        return diaryRepository.findByMemberIdAndWrittenDateBetween(memberId, startDate, endDate);
     }
 
     public Diary getDiary(Long diaryId) {

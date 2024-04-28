@@ -12,7 +12,7 @@ public interface DiaryService {
     Diary createDiary(DiaryRequestDTO.CreateDiaryRequestDTO requestDTO);
     Diary updateDiary(DiaryRequestDTO.UpdateDiaryRequestDTO requestDTO);
     void deleteDiary(Long diaryId);
-    List<Diary> getDiariesByMonth(Member member, LocalDate yearMonth);
+    List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth);
 
     Diary getDiary(Long diaryId);
 

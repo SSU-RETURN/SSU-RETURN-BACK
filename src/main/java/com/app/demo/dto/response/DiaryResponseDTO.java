@@ -30,6 +30,7 @@ public class DiaryResponseDTO {
     @Builder
     public static class DiaryContentDTO {
         private Member member;
+        private Long memberId;
         private Long id;
         private Emotion memberEmotion;
         private Emotion AIEmotion;

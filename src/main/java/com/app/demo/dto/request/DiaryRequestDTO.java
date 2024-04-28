@@ -1,5 +1,6 @@
 package com.app.demo.dto.request;
 
+import com.app.demo.entity.Member;
 import com.app.demo.entity.enums.Emotion;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,6 @@ public class DiaryRequestDTO{
         private Emotion aiEmotion;
         private String pictureKey;
         private LocalDate writtenDate;
-        private Long aiPlaylistId;
-        private Long memberPlaylistId;
         //private List<Long> musicList;
     }
 
