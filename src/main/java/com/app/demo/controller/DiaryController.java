@@ -78,7 +78,7 @@ public class DiaryController {
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "일기수정", description = "일기수정 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "수정성공")})
-    @PostMapping("/update")
+    @PutMapping("/update")
     public BaseResponse<String> updateDiary(@RequestBody DiaryRequestDTO.UpdateDiaryRequestDTO requestDTO){
         Diary diary =diaryService.updateDiary(requestDTO);
         return BaseResponse.onSuccess("일기수정완료");
@@ -87,7 +87,7 @@ public class DiaryController {
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "일기삭제", description = "일기삭제 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "삭제성공")})
-    @PostMapping("/delete/{diaryId}")
+    @DeleteMapping("/delete/{diaryId}")
     public BaseResponse<String> deleteDiary(@PathVariable Long diaryId){
         diaryService.deleteDiary(diaryId);
         return BaseResponse.onSuccess("일기삭제완료");
@@ -96,7 +96,7 @@ public class DiaryController {
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "월별일기조회", description = "월별일기조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
-    @PostMapping("/get-by-month/{memberId}")
+    @GetMapping("/monthly/{memberId}")
     public BaseResponse<List<DiaryResponseDTO.MonthlyDiaryDTO>> getDiariesByMonth(@PathVariable Long memberId, @RequestParam(name = "YearMonth") LocalDate yearMonth){
 
         List<Diary> diaries = diaryService.getDiariesByMonth(memberId, yearMonth);
