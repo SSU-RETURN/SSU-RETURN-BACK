@@ -69,9 +69,10 @@ public class DiaryController {
     @Operation(summary = "일기생성", description = "일기생성 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON201", description="등록성공")})
     @PostMapping("/create")
-    public BaseResponse<String> createDiary(@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
+    public BaseResponse<DiaryResponseDTO.DiaryContentDTO> createDiary(@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
         Diary diary = diaryService.createDiary(requestDTO);
-        return BaseResponse.onSuccess("일기생성완료");
+        DiaryResponseDTO.DiaryContentDTO responseDTO = DiaryConverter.toDiaryContentDTO(diary);
+        return BaseResponse.onSuccess(responseDTO);
     }
 
     @ResponseStatus(code = HttpStatus.OK)
@@ -106,7 +107,7 @@ public class DiaryController {
     }
 
     @ResponseStatus(code = HttpStatus.OK)
-    @Operation(summary = "월별일기조회", description = "월별일기조회 API입니다")
+    @Operation(summary = "일기조회", description = "일기조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @PostMapping("/details/{diaryId}")
     public BaseResponse<DiaryResponseDTO.DiaryContentDTO> getDiary(@PathVariable Long diaryId){
