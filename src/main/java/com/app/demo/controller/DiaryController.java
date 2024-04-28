@@ -1,9 +1,14 @@
 package com.app.demo.controller;
 
+import com.app.demo.apiPayload.BaseResponse;
+import com.app.demo.converter.DiaryConverter;
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.dto.response.DiaryResponseDTO;
 import com.app.demo.entity.Diary;
 import com.app.demo.service.DiaryService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +16,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/diary")
 public class DiaryController {
-    private final DiaryService diaryService;
     @Autowired
+    private final DiaryService diaryService;
     public DiaryController(DiaryService diaryService) {
         this.diaryService = diaryService;
     }
+
+
+    /*
     @PostMapping("/create")
     public ResponseEntity<Void> createDiary
             (@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
@@ -53,5 +62,55 @@ public class DiaryController {
         }
         return new ResponseEntity<>(diary, HttpStatus.OK);
     }
+     */
 
+    @ResponseStatus(code = HttpStatus.CREATED)
+    @Operation(summary = "일기생성", description = "일기생성 API입니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON201", description="등록성공")})
+    @PostMapping("/create")
+    public BaseResponse<String> createDiary(@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
+        Diary diary = diaryService.createDiary(requestDTO);
+        return BaseResponse.onSuccess("일기생성완료");
+    }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "일기수정", description = "일기수정 API입니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "수정성공")})
+    @PostMapping("/update")
+    public BaseResponse<String> updateDiary(@RequestBody DiaryRequestDTO.UpdateDiaryRequestDTO requestDTO){
+        Diary diary =diaryService.updateDiary(requestDTO);
+        return BaseResponse.onSuccess("일기수정완료");
+    }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "일기삭제", description = "일기삭제 API입니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "삭제성공")})
+    @PostMapping("/delete/{diaryId}")
+    public BaseResponse<String> deleteDiary(@PathVariable Long diaryId){
+        diaryService.deleteDiary(diaryId);
+        return BaseResponse.onSuccess("일기삭제완료");
+    }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "월별일기조회", description = "월별일기조회 API입니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
+    @PostMapping("/get-by-month/{memberId}")
+    public BaseResponse<List<DiaryResponseDTO.MonthlyDiaryDTO>> getDiariesByMonth(@PathVariable Long memberId,@RequestParam(name = "YearMonth") LocalDate yearMonth){
+
+        List<Diary> diaries = diaryService.getDiariesByMonth(memberId, yearMonth);
+        List<DiaryResponseDTO.MonthlyDiaryDTO> responseDTOList = diaries.stream()
+                .map(DiaryConverter::toMonthlyDiaryDTO)
+                .collect(Collectors.toList());
+        return BaseResponse.onSuccess(responseDTOList);
+    }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "월별일기조회", description = "월별일기조회 API입니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
+    @PostMapping("/details/{diaryId}")
+    public BaseResponse<DiaryResponseDTO.DiaryContentDTO> getDiary(@PathVariable Long diaryId){
+        Diary diary = diaryService.getDiary(diaryId);
+        DiaryResponseDTO.DiaryContentDTO responseDTO = DiaryConverter.toDiaryContentDTO(diary);
+        return BaseResponse.onSuccess(responseDTO);
+    }
 }

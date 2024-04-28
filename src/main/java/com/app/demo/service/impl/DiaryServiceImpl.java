@@ -52,7 +52,7 @@ public class DiaryServiceImpl implements DiaryService {
                 .memberEmotion(requestDTO.getMemberEmotion())
                 .playlistDate(getLocalDate())
                 .build();
-                //.musicList(musicList)
+        //.musicList(musicList)
         Diary diary = Diary.builder()
                 .member(member)
                 .content(requestDTO.getContent())
@@ -72,10 +72,12 @@ public class DiaryServiceImpl implements DiaryService {
         return diaryRepository.save(diary);
 
     }
+
     private Emotion extractAiEmotion(String content) {
         return Emotion.HAPPY;       //더미값
     }
-    private LocalDate getLocalDate(){
+
+    private LocalDate getLocalDate() {
         return LocalDate.now();
     }
 
@@ -99,29 +101,15 @@ public class DiaryServiceImpl implements DiaryService {
         diaryRepository.deleteById(diaryId);
     }
 
-    public List<DiaryResponseDTO.MonthlyDiaryDTO> getDiariesByMonth(Long memberId, LocalDate yearMonth) {
+    public List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth) {
         LocalDate startDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
-        List<Diary> diaries = diaryRepository.findByMemberIdAndWrittenDateBetween(memberId, startDate, endDate);
-        return diaries.stream()
-                .map(diary -> new DiaryResponseDTO.MonthlyDiaryDTO(diary.getId(), diary.getWrittenDate(), diary.getMemberEmotion()))
-                .collect(Collectors.toList());
+        return diaryRepository.findByMemberIdAndWrittenDateBetween(memberId, startDate, endDate);
     }
 
-    public DiaryResponseDTO.DiaryDTO getDiary(Long diaryId) {
-        Diary diary = diaryRepository.findById(diaryId).orElse(null);
-        if (diary == null) {
-            return null;
-        }
-
-        return new DiaryResponseDTO.DiaryDTO(
-                diary.getContent(),
-                diary.getPictureKey()!= null ? diary.getPictureKey():null,
-                diary.getAiPlaylist() != null ? diary.getAiPlaylist().getId() : null,
-                diary.getMemberPlaylist() != null ? diary.getMemberPlaylist().getId() : null
-        );
-
+    public Diary getDiary(Long diaryId) {
+        return diaryRepository.findById(diaryId).orElse(null);
     }
-
+}
 
 
