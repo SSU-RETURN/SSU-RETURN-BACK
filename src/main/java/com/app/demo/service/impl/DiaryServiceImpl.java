@@ -101,10 +101,10 @@ public class DiaryServiceImpl implements DiaryService {
         diaryRepository.deleteById(diaryId);
     }
 
-    public List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth) {
+    public List<Diary> getDiariesByMonth(Member member, LocalDate yearMonth) {
         LocalDate startDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         LocalDate endDate = startDate.plusMonths(1).minusDays(1);
-        return diaryRepository.findByMemberIdAndWrittenDateBetween(memberId, startDate, endDate);
+        return diaryRepository.findByMemberAndWrittenDateBetween(member, startDate, endDate);
     }
 
     public Diary getDiary(Long diaryId) {

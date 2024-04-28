@@ -5,6 +5,7 @@ import com.app.demo.converter.DiaryConverter;
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.dto.response.DiaryResponseDTO;
 import com.app.demo.entity.Diary;
+import com.app.demo.entity.Member;
 import com.app.demo.service.DiaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -95,9 +96,9 @@ public class DiaryController {
     @Operation(summary = "월별일기조회", description = "월별일기조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @PostMapping("/get-by-month/{memberId}")
-    public BaseResponse<List<DiaryResponseDTO.MonthlyDiaryDTO>> getDiariesByMonth(@PathVariable Long memberId,@RequestParam(name = "YearMonth") LocalDate yearMonth){
+    public BaseResponse<List<DiaryResponseDTO.MonthlyDiaryDTO>> getDiariesByMonth(@PathVariable Member member, @RequestParam(name = "YearMonth") LocalDate yearMonth){
 
-        List<Diary> diaries = diaryService.getDiariesByMonth(memberId, yearMonth);
+        List<Diary> diaries = diaryService.getDiariesByMonth(member, yearMonth);
         List<DiaryResponseDTO.MonthlyDiaryDTO> responseDTOList = diaries.stream()
                 .map(DiaryConverter::toMonthlyDiaryDTO)
                 .collect(Collectors.toList());
