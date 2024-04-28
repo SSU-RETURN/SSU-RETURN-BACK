@@ -4,6 +4,7 @@ import com.app.demo.entity.enums.Emotion;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,27 +22,20 @@ public class MemberPlaylist {
     @Column(name = "member_playlist_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diary_id", updatable = false)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "diary_id")
     private Diary diary;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_emotion")
     private Emotion memberEmotion;
 
-    @PostLoad
-    private void loadMemberEmotion() {
-        if (diary != null) {
-            memberEmotion = diary.getMemberEmotion();
-        }
-    }
-
     @Column(name = "playlist_date")
-    private LocalDateTime playlistDate;
+    private LocalDate playlistDate;
 
 }
 

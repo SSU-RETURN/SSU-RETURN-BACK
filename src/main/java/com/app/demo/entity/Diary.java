@@ -4,7 +4,10 @@ import com.app.demo.entity.enums.Emotion;
 import jakarta.persistence.*;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -22,8 +25,11 @@ public class Diary {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member")
     private Member member;
+
+    @Column(name = "member_id")
+    private Long memberId;
 
     @Column(length = 500)
     private String content;
@@ -40,6 +46,14 @@ public class Diary {
     private String pictureKey;
 
     @Column(name = "written_date")
-    private LocalDateTime writtenDate;
+    private LocalDate writtenDate;
+
+    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "ai_playlist")
+    private AIPlaylist aiPlaylist;
+
+    @OneToOne(fetch=FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "member_playlist")
+    private MemberPlaylist memberPlaylist;
 
 }
