@@ -95,6 +95,8 @@ public class MusicServiceImpl implements MusicService {
 
                 musicRepository.save(music);
                 savedMusics.add(music);
+            }else{
+                savedMusics.add(existingMusic.get());
             }
         }
 
