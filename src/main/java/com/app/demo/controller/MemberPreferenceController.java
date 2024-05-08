@@ -38,7 +38,7 @@ public class MemberPreferenceController {
     @PutMapping("/update")
     public BaseResponse<String> updateMemberPreference(@RequestBody MemberPreferenceRequestDTO.UpdateMemberPreferenceRequestDTO requestDTO){
         MemberPreference memberPreference = memberPreferenceService.updateMemberPreference(requestDTO);
-        return BaseResponse.onSuccess("일기수정성공");
+        return BaseResponse.onSuccess("취향수정성공");
     }
 
 
