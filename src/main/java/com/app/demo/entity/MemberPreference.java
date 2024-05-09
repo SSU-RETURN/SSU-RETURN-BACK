@@ -16,7 +16,7 @@ import lombok.*;
 public class MemberPreference {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberPreference_id")
+    @Column(name = "member_preference_id")
     private Long memberPreferenceId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
