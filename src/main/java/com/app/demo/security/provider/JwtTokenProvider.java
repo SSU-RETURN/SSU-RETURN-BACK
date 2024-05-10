@@ -3,6 +3,7 @@ package com.app.demo.security.provider;
 import com.app.demo.dto.response.LoginResponseDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,6 +77,9 @@ public class JwtTokenProvider {
 
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        } else {
+            // 로그 출력을 추가하여 어떤 값이 실제로 반환되는지 확인
+            log.debug("User ID from token: {}", claims.getSubject());
         }
 
         // 클레임에서 권한 정보 가져오기
@@ -91,6 +95,7 @@ public class JwtTokenProvider {
 
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
+        log.debug("Validating token: {}", token);
         try {
             Jwts.parserBuilder()
                     .setSigningKey(secretKey)
@@ -105,6 +110,8 @@ public class JwtTokenProvider {
             log.info("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {
             log.info("JWT claims string is empty.", e);
+        } catch (DecodingException e){
+            log.error("Token validation error: {}", e.getMessage());
         }
         return false;
     }

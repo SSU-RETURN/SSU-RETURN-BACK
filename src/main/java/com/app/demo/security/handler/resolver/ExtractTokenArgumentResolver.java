@@ -31,7 +31,7 @@ public class ExtractTokenArgumentResolver implements HandlerMethodArgumentResolv
             throws Exception {
 
         String refreshToken = webRequest.getHeader("Authorization");
-        jwtTokenProvider.validateToken(refreshToken);
+        jwtTokenProvider.validateToken(refreshToken.substring(7));
         return refreshToken;
     }
 }

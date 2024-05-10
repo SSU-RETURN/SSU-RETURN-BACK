@@ -20,10 +20,10 @@ public class PrincipalDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String userMemberId) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Member member =
                 memberRepository
-                        .findById(Long.parseLong(userMemberId))
+                        .findByUserID(userId)
                         .orElseThrow(() -> new AuthException(ErrorStatus.USER_NOT_FOUND));
 
         return new PrincipalDetails(member);

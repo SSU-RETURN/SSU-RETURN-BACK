@@ -89,17 +89,17 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public TokenRefreshResponse refresh(String refreshToken) {
+        refreshToken = refreshToken.substring(7);
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new IllegalArgumentException("Invalid refresh token.");
         }
 
-        String userId = jwtTokenProvider.getSubjectFromToken(refreshToken);
-        Member member = memberRepository.findByUserID(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId));
+        Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                member.getUserID(), null, Arrays.asList(new SimpleGrantedAuthority("USER")));
+        Member member = memberRepository.findByUserID(authentication.getName())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + authentication.getName()));
 
+        // 새 토큰 생성
         LoginResponseDTO.JwtToken newTokens = jwtTokenProvider.generateToken(authentication);
         long expiresIn = jwtTokenProvider.getRemainingTime(newTokens.getAccessToken());
 
