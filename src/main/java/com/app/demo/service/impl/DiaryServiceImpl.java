@@ -109,7 +109,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     public Diary getDiary(Long diaryId) {
-        return diaryRepository.findById(diaryId).orElse(null);
+        return diaryRepository.findByDiaryId(diaryId);
     }
 }
 

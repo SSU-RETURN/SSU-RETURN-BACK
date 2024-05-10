@@ -12,7 +12,7 @@ public class DiaryConverter {
 
     public static DiaryResponseDTO.DiaryContentDTO toDiaryContentDTO(Diary diary){
         return DiaryResponseDTO.DiaryContentDTO.builder()
-                .id(diary.getId())
+                .id(diary.getDiaryId())
                 .member(diary.getMember())
                 .memberId(diary.getMemberId())
                 .AIEmotion(diary.getAiEmotion())
@@ -26,7 +26,7 @@ public class DiaryConverter {
     }
     public static DiaryResponseDTO.MonthlyDiaryDTO toMonthlyDiaryDTO(Diary diary){
         return DiaryResponseDTO.MonthlyDiaryDTO.builder()
-                .id(diary.getId())
+                .id(diary.getDiaryId())
                 .writtenDate(diary.getWrittenDate())
                 .memberEmotion(diary.getMemberEmotion())
                 .build();
