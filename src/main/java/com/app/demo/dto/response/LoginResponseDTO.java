@@ -10,7 +10,8 @@ public class LoginResponseDTO {
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class OAuthResponse {
-        Long userId;
+        Long memberId;
+        String nickname;
         String accessToken;
         String refreshToken;
         Boolean isLogin;

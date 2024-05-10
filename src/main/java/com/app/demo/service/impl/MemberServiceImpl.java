@@ -3,6 +3,7 @@ package com.app.demo.service.impl;
 import com.app.demo.apiPayload.code.status.ErrorStatus;
 import com.app.demo.apiPayload.exception.AuthException;
 import com.app.demo.apiPayload.exception.UserException;
+import com.app.demo.converter.MemberConverter;
 import com.app.demo.dto.MemberSignupDTO;
 import com.app.demo.dto.request.LoginRequestDTO;
 import com.app.demo.dto.response.LoginResponseDTO;
@@ -32,12 +33,12 @@ import java.util.Arrays;
 public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final MemberConverter memberConverter;
     private final JwtTokenProvider jwtTokenProvider;
     @Override
-    public Member findUserById(Long userId) {
+    public Member findUserById(Long memberId) {
         return memberRepository
-                .findById(userId)
+                .findById(memberId)
                 .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
     }
     @Override
@@ -60,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public LoginResponseDTO.JwtToken login(LoginRequestDTO loginRequestDTO) {
+    public LoginResponseDTO.OAuthResponse login(LoginRequestDTO loginRequestDTO) {
         // 사용자 ID로 멤버 조회
         Member member = memberRepository.findByUserID(loginRequestDTO.getUserID())
                 .orElseThrow(() -> new RuntimeException("User not found.")); // 예외 처리 강화 필요
@@ -82,7 +83,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         // 토큰 반환
-        return jwtToken;
+        return memberConverter.convertToOAuthResponse(member, jwtToken.getAccessToken(), jwtToken.getRefreshToken());
     }
 
     // 토큰 새로 고침 로직

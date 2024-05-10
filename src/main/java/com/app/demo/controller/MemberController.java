@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/member")
@@ -37,17 +36,17 @@ public class MemberController {
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회 성공")})
     @Operation(summary = "로그인", description = "로그인 API입니다.")
     @PostMapping("/login")
-    private BaseResponse<LoginResponseDTO.JwtToken> login(@RequestBody LoginRequestDTO loginRequest){
-        LoginResponseDTO.JwtToken token = memberService.login(loginRequest);
-        return BaseResponse.onSuccess(token);
+    private BaseResponse<LoginResponseDTO.OAuthResponse> login(@RequestBody LoginRequestDTO loginRequest){
+        LoginResponseDTO.OAuthResponse response = memberService.login(loginRequest);
+        return BaseResponse.onSuccess(response);
     }
 
+    @ResponseStatus(code = HttpStatus.OK)
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회 성공")})
     @Operation(summary = "JWT Access Token 재발급 API", description = "Refresh Token을 검증하고 새로운 Access Token과 Refresh Token을 응답합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-    })
     @PostMapping("/refresh")
     public BaseResponse<TokenRefreshResponse> refresh(@ExtractToken String refreshToken) {
-        return BaseResponse.onSuccess(memberService.refresh(refreshToken));
+        TokenRefreshResponse response = memberService.refresh(refreshToken);
+        return BaseResponse.onSuccess(response);
     }
 }

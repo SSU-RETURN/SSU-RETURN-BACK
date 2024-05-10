@@ -9,7 +9,7 @@ import com.app.demo.entity.Member;
 public interface MemberService {
     Member findUserById(Long userId);
     public Member signUp(MemberSignupDTO memberSignUpDto) throws Exception;
-    public LoginResponseDTO.JwtToken login (LoginRequestDTO loginRequestDTO);
+    public LoginResponseDTO.OAuthResponse login (LoginRequestDTO loginRequestDTO);
     void deleteMember(Member member);
     public TokenRefreshResponse refresh(String refreshToken);
 }
