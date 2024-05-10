@@ -109,7 +109,7 @@ public class DiaryController {
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "일기조회", description = "일기조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
-    @PostMapping("/details/{diaryId}")
+    @GetMapping("/details/{diaryId}")
     public BaseResponse<DiaryResponseDTO.DiaryContentDTO> getDiary(@PathVariable Long diaryId){
         Diary diary = diaryService.getDiary(diaryId);
         DiaryResponseDTO.DiaryContentDTO responseDTO = DiaryConverter.toDiaryContentDTO(diary);
