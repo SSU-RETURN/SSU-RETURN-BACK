@@ -20,7 +20,7 @@ public class AIPlaylist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ai_Playlist_id")
-    private Long id;
+    private Long aiPlaylistId;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", updatable = false)

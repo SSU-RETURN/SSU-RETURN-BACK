@@ -22,7 +22,7 @@ public class AIPlaylistConverter {
     }
 
     public AIPlaylistResponseDTO.AIPlaylistMusicsDTO toAIPlaylistMusics(AIPlaylist aiPlaylist){
-        Long aiPlaylistId = aiPlaylist.getId();
+        Long aiPlaylistId = aiPlaylist.getAiPlaylistId();
         List<AIPlaylistMusic> aiPlaylistMusicList = aiPlaylistMusicRepository.findByAiPlaylistId(aiPlaylistId);
         List<Music> aiPlaylistMusics = new ArrayList<>();
         for(AIPlaylistMusic aiPlaylistMusic : aiPlaylistMusicList){

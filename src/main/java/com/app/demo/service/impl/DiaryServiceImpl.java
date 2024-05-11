@@ -15,12 +15,14 @@ import com.app.demo.repository.MemberPlaylistRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class DiaryServiceImpl implements DiaryService {
     private final DiaryRepository diaryRepository;
     private final MemberRepository memberRepository;
@@ -42,11 +44,11 @@ public class DiaryServiceImpl implements DiaryService {
         Emotion aiEmotion = extractAiEmotion(requestDTO.getContent());
         //List<Long> musicList = requestDTO.getMusicList;
 
-        AIPlaylist aiPlaylist = (AIPlaylist.builder()
+        AIPlaylist aiPlaylist = AIPlaylist.builder()
                 .member(member)
                 .aiEmotion(aiEmotion)
                 .playlistDate(getLocalDate())
-                .build());
+                .build();
         MemberPlaylist memberPlaylist = MemberPlaylist.builder()
                 .member(member)
                 .memberEmotion(requestDTO.getMemberEmotion())
@@ -66,6 +68,7 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
 
         memberPlaylist.setDiary(diary);
+        aiPlaylist.setDiaryId(diary.getDiaryId());
         aiPlaylist.setDiary(diary);
         memberPlaylistRepository.save(memberPlaylist);
         aiPlaylistRepository.save(aiPlaylist);

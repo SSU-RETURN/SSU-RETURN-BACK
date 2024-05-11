@@ -3,7 +3,9 @@ import com.app.demo.apiPayload.BaseResponse;
 import com.app.demo.converter.AIPlaylistConverter;
 import com.app.demo.dto.response.AIPlaylistResponseDTO;
 import com.app.demo.entity.AIPlaylist;
+import com.app.demo.entity.Diary;
 import com.app.demo.repository.AIPlaylistMusicRepository;
+import com.app.demo.repository.DiaryRepository;
 import com.app.demo.repository.MusicRepository;
 import com.app.demo.service.AIPlaylistService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/AIPlaylist")
 public class AIPlaylistController {
@@ -21,13 +25,17 @@ public class AIPlaylistController {
     private final AIPlaylistMusicRepository aiPlaylistMusicRepository;
     private final MusicRepository musicRepository;
 
+    private final DiaryRepository diaryRepository;
+
+
     @Autowired
     public AIPlaylistController(AIPlaylistService aiPlaylistService,
                                 AIPlaylistMusicRepository aiPlaylistMusicRepository,
-                                MusicRepository musicRepository) {
+                                MusicRepository musicRepository, DiaryRepository diaryRepository) {
         this.aiPlaylistService = aiPlaylistService;
         this.aiPlaylistMusicRepository = aiPlaylistMusicRepository;
         this.musicRepository = musicRepository;
+        this.diaryRepository = diaryRepository;
     }
 
     @ResponseStatus(code = HttpStatus.OK)
@@ -35,11 +43,10 @@ public class AIPlaylistController {
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @GetMapping("/details/{diaryId}")
     public BaseResponse<AIPlaylistResponseDTO.AIPlaylistMusicsDTO> getAIPlaylistMusics(@PathVariable Long diaryId){
-        AIPlaylist aiPlaylist = aiPlaylistService.getAIPlaylistByDiaryId(diaryId);
+        AIPlaylist aiPlaylist = diaryRepository.findByDiaryId(diaryId).getAiPlaylist();
         AIPlaylistConverter converter = new AIPlaylistConverter(aiPlaylistMusicRepository, musicRepository);
         AIPlaylistResponseDTO.AIPlaylistMusicsDTO responseDTO = converter.toAIPlaylistMusics(aiPlaylist);
         return BaseResponse.onSuccess(responseDTO);
     }
-
 
 }

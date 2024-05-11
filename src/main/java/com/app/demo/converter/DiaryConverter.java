@@ -19,7 +19,7 @@ public class DiaryConverter {
                 .memberEmotion(diary.getMemberEmotion())
                 .content(diary.getContent())
                 .pictureKey(diary.getPictureKey())
-                .aiPlaylistId(diary.getAiPlaylist().getId())
+                .aiPlaylistId(diary.getAiPlaylist().getAiPlaylistId())
                 .memberPlaylistId(diary.getMemberPlaylist().getId())
                 .writtenDate(diary.getWrittenDate())
                 .build();
