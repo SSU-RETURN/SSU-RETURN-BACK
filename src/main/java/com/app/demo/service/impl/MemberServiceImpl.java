@@ -14,6 +14,7 @@ import com.app.demo.security.provider.JwtTokenProvider;
 import com.app.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,8 +24,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,10 +45,10 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
     }
     @Override
-    public Member signUp(MemberSignupDTO memberSignUpDto) throws Exception {
+    public Member signUp(MemberSignupDTO memberSignUpDto) {
 
         if (memberRepository.findByUserID(memberSignUpDto.getUserID()).isPresent()) {
-            throw new Exception("이미 존재하는 아이디입니다.");
+            throw new UserException(ErrorStatus.USER_EXISTS);
         }
 
         Member member = Member.builder()
@@ -64,16 +67,16 @@ public class MemberServiceImpl implements MemberService {
     public LoginResponseDTO.OAuthResponse login(LoginRequestDTO loginRequestDTO) {
         // 사용자 ID로 멤버 조회
         Member member = memberRepository.findByUserID(loginRequestDTO.getUserID())
-                .orElseThrow(() -> new RuntimeException("User not found.")); // 예외 처리 강화 필요
+                .orElseThrow(() -> new AuthException(ErrorStatus.USER_NOT_FOUND)); // 예외 처리 강화 필요
 
         // 패스워드 검증
         if (!passwordEncoder.matches(loginRequestDTO.getPassword(), member.getPassword())) {
-            throw new RuntimeException("Invalid password."); // 예외 처리 강화 필요
+            throw new AuthException(ErrorStatus.INVALID_PASSWORD);
         }
 
         // 사용자 인증 정보 생성
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                member.getUserID(), null, Arrays.asList(new SimpleGrantedAuthority("USER")));
+                member.getUserID(), null, List.of(new SimpleGrantedAuthority("USER")));
 
         // JWT 토큰 생성
         LoginResponseDTO.JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
@@ -92,13 +95,13 @@ public class MemberServiceImpl implements MemberService {
     public TokenRefreshResponse refresh(String refreshToken) {
         refreshToken = refreshToken.substring(7);
         if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new IllegalArgumentException("Invalid refresh token.");
+            throw new AuthException(ErrorStatus.AUTH_INVALID_TOKEN);
         }
 
         Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
 
         Member member = memberRepository.findByUserID(authentication.getName())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + authentication.getName()));
+                .orElseThrow(() -> new AuthException(ErrorStatus.USER_NOT_FOUND));
 
         // 새 토큰 생성
         LoginResponseDTO.JwtToken newTokens = jwtTokenProvider.generateToken(authentication);

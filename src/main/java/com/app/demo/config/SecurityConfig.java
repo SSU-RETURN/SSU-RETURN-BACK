@@ -50,7 +50,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                         .accessDeniedHandler(jwtAccessDeniedHandler))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/member/signup", "/api/member/login", "api/music/search","/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/member/signup", "/api/member/login", "api/music/search","/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(authExceptionHandlingFilter, JwtRequestFilter.class);
