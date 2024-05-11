@@ -30,7 +30,7 @@ public class AIPlaylistConverter {
             musicRepository.findById(musicId).ifPresent(aiPlaylistMusics::add);
         }
         return AIPlaylistResponseDTO.AIPlaylistMusicsDTO.builder()
-                .AIPlaylistMusics(aiPlaylistMusics)
+                .aiPlaylistMusics(aiPlaylistMusics)
                 .build();
     }
 

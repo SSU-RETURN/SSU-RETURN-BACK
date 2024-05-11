@@ -27,8 +27,11 @@ public class AIPlaylist {
     private Member member;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "diary_id")
+    @JoinColumn(name = "diary")
     private Diary diary;
+
+    @Column(name = "diary_id")
+    private Long diaryId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ai_emotion")

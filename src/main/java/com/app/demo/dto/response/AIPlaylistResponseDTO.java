@@ -16,7 +16,7 @@ public class AIPlaylistResponseDTO {
     @AllArgsConstructor
     @Builder
     public static class AIPlaylistMusicsDTO{
-        private List<Music> AIPlaylistMusics;
+        private List<Music> aiPlaylistMusics;
     }
 
 }

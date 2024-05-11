@@ -33,9 +33,9 @@ public class AIPlaylistController {
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "AI플레이리스트음악조회", description = "AI플레이리스트 내 음악 조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
-    @GetMapping("/details/{aiPlaylistID}")
-    public BaseResponse<AIPlaylistResponseDTO.AIPlaylistMusicsDTO> getAIPlaylistMusics(@PathVariable Long aiPlaylistId){
-        AIPlaylist aiPlaylist = aiPlaylistService.getAIPlaylist(aiPlaylistId);
+    @GetMapping("/details/{diaryId}")
+    public BaseResponse<AIPlaylistResponseDTO.AIPlaylistMusicsDTO> getAIPlaylistMusics(@PathVariable Long diaryId){
+        AIPlaylist aiPlaylist = aiPlaylistService.getAIPlaylistByDiaryId(diaryId);
         AIPlaylistConverter converter = new AIPlaylistConverter(aiPlaylistMusicRepository, musicRepository);
         AIPlaylistResponseDTO.AIPlaylistMusicsDTO responseDTO = converter.toAIPlaylistMusics(aiPlaylist);
         return BaseResponse.onSuccess(responseDTO);

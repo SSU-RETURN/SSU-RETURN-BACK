@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
 public interface AIPlaylistRepository extends JpaRepository<AIPlaylist, Long> {
+    AIPlaylist findByDiaryId(Long diaryId);
 }
