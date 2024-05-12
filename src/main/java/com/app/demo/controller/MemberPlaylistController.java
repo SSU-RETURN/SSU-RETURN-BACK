@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/memberPlaylist")
+@RequestMapping("/api/memberplaylist")
 public class MemberPlaylistController {
 
     private final MemberPlaylistService memberPlaylistService;
