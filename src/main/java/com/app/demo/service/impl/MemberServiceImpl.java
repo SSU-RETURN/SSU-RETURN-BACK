@@ -57,6 +57,7 @@ public class MemberServiceImpl implements MemberService {
                 .userID(memberSignUpDto.getUserID())
                 .password(memberSignUpDto.getPassword())
                 .nickname(memberSignUpDto.getNickname())
+                .isDelete(1)
                 .build();
 
         member.passwordEncode(passwordEncoder);
