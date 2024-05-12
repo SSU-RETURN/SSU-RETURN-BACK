@@ -20,15 +20,17 @@ public class MemberPlaylist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_playlist_id")
-    private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id", updatable = false)
-    private Member member;
+    private Long memberPlaylistId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "diary_id")
+    @JoinColumn(name = "diary")
     private Diary diary;
+
+    @Column(name = "diary_id")
+    private Long diaryId;
+
+    @Column(name = "member_id")
+    private Long memberId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_emotion")

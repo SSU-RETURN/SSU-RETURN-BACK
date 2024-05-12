@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/memberPreference")
+@RequestMapping("/api/memberpreference")
 public class MemberPreferenceController {
     @Autowired
     private final MemberPreferenceService memberPreferenceService;

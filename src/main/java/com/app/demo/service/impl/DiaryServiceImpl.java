@@ -15,12 +15,14 @@ import com.app.demo.repository.MemberPlaylistRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class DiaryServiceImpl implements DiaryService {
     private final DiaryRepository diaryRepository;
     private final MemberRepository memberRepository;
@@ -42,15 +44,13 @@ public class DiaryServiceImpl implements DiaryService {
         Emotion aiEmotion = extractAiEmotion(requestDTO.getContent());
         //List<Long> musicList = requestDTO.getMusicList;
 
-        AIPlaylist aiPlaylist = (AIPlaylist.builder()
-                .member(member)
+        AIPlaylist aiPlaylist = AIPlaylist.builder()
+                .memberId(requestDTO.getMemberId())
                 .aiEmotion(aiEmotion)
-                .playlistDate(getLocalDate())
-                .build());
+                .build();
         MemberPlaylist memberPlaylist = MemberPlaylist.builder()
-                .member(member)
+                .memberId(requestDTO.getMemberId())
                 .memberEmotion(requestDTO.getMemberEmotion())
-                .playlistDate(getLocalDate())
                 .build();
         //.musicList(musicList)
         Diary diary = Diary.builder()
@@ -65,21 +65,22 @@ public class DiaryServiceImpl implements DiaryService {
                 .memberPlaylist(memberPlaylist)
                 .build();
 
+        diaryRepository.save(diary);
         memberPlaylist.setDiary(diary);
+        memberPlaylist.setPlaylistDate(diary.getWrittenDate());
+        memberPlaylist.setDiaryId(diary.getDiaryId());
         aiPlaylist.setDiary(diary);
+        aiPlaylist.setPlaylistDate(diary.getWrittenDate());
+        aiPlaylist.setDiaryId(diary.getDiaryId());
         memberPlaylistRepository.save(memberPlaylist);
         aiPlaylistRepository.save(aiPlaylist);
 
-        return diaryRepository.save(diary);
+        return diary;
 
     }
 
     private Emotion extractAiEmotion(String content) {
         return Emotion.HAPPY;       //더미값
-    }
-
-    private LocalDate getLocalDate() {
-        return LocalDate.now();
     }
 
     @Override
@@ -109,7 +110,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     public Diary getDiary(Long diaryId) {
-        return diaryRepository.findById(diaryId).orElse(null);
+        return diaryRepository.findByDiaryId(diaryId);
     }
 }
 
