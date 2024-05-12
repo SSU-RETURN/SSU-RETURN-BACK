@@ -18,4 +18,9 @@ public class AIPlaylistServiceImpl implements AIPlaylistService {
         this.aiPlaylistRepository = aiPlaylistRepository;
     }
 
+    @Override
+    public AIPlaylist getAiPlaylist(Long diaryId){
+        return aiPlaylistRepository.findByDiaryId(diaryId);
+    }
+
 }

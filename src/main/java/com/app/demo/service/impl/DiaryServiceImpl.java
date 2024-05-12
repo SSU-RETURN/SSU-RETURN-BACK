@@ -45,14 +45,12 @@ public class DiaryServiceImpl implements DiaryService {
         //List<Long> musicList = requestDTO.getMusicList;
 
         AIPlaylist aiPlaylist = AIPlaylist.builder()
-                .member(member)
+                .memberId(requestDTO.getMemberId())
                 .aiEmotion(aiEmotion)
-                .playlistDate(getLocalDate())
                 .build();
         MemberPlaylist memberPlaylist = MemberPlaylist.builder()
-                .member(member)
+                .memberId(requestDTO.getMemberId())
                 .memberEmotion(requestDTO.getMemberEmotion())
-                .playlistDate(getLocalDate())
                 .build();
         //.musicList(musicList)
         Diary diary = Diary.builder()
@@ -67,22 +65,22 @@ public class DiaryServiceImpl implements DiaryService {
                 .memberPlaylist(memberPlaylist)
                 .build();
 
+        diaryRepository.save(diary);
         memberPlaylist.setDiary(diary);
-        aiPlaylist.setDiaryId(diary.getDiaryId());
+        memberPlaylist.setPlaylistDate(diary.getWrittenDate());
+        memberPlaylist.setDiaryId(diary.getDiaryId());
         aiPlaylist.setDiary(diary);
+        aiPlaylist.setPlaylistDate(diary.getWrittenDate());
+        aiPlaylist.setDiaryId(diary.getDiaryId());
         memberPlaylistRepository.save(memberPlaylist);
         aiPlaylistRepository.save(aiPlaylist);
 
-        return diaryRepository.save(diary);
+        return diary;
 
     }
 
     private Emotion extractAiEmotion(String content) {
         return Emotion.HAPPY;       //더미값
-    }
-
-    private LocalDate getLocalDate() {
-        return LocalDate.now();
     }
 
     @Override

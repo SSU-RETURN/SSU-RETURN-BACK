@@ -22,9 +22,8 @@ public class AIPlaylist {
     @Column(name = "ai_Playlist_id")
     private Long aiPlaylistId;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id", updatable = false)
-    private Member member;
+    @Column(name = "member_id")
+    private Long memberId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "diary")

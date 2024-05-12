@@ -21,8 +21,11 @@ public class MemberPlaylistMusic {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_playlist_id")
+    @JoinColumn(name = "member_playlist")
     private MemberPlaylist memberPlaylist;
+
+    @Column(name = "member_playlist_id")
+    private Long memberPlaylistId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

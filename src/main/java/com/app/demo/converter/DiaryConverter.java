@@ -20,7 +20,7 @@ public class DiaryConverter {
                 .content(diary.getContent())
                 .pictureKey(diary.getPictureKey())
                 .aiPlaylistId(diary.getAiPlaylist().getAiPlaylistId())
-                .memberPlaylistId(diary.getMemberPlaylist().getId())
+                .memberPlaylistId(diary.getMemberPlaylist().getMemberPlaylistId())
                 .writtenDate(diary.getWrittenDate())
                 .build();
     }
