@@ -22,7 +22,7 @@ public class PreferencePlaylist {
     private Long id;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", updatable = false)
     private Member member;
 
