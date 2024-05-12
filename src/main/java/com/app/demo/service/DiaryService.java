@@ -13,7 +13,5 @@ public interface DiaryService {
     Diary updateDiary(DiaryRequestDTO.UpdateDiaryRequestDTO requestDTO);
     void deleteDiary(Long diaryId);
     List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth);
-
     Diary getDiary(Long diaryId);
-
 }

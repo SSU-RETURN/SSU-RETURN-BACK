@@ -33,7 +33,7 @@ public class MusicController {
 
     @ResponseStatus(code = HttpStatus.OK)
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회 성공")})
-    @Operation(summary = "accessToken발급", description = "토큰 받아오는 API입니다.")
+    @Operation(summary = "SpotifyAccessToken발급", description = "Spotify 토큰 받아오는 API입니다.")
     @GetMapping("/getToken")
     private BaseResponse<String> getSpotifyToken(){
         String token = musicService.getAccessToken();
