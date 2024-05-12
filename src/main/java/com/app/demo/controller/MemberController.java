@@ -5,6 +5,7 @@ import com.app.demo.dto.MemberSignupDTO;
 import com.app.demo.dto.request.LoginRequestDTO;
 import com.app.demo.dto.response.LoginResponseDTO;
 import com.app.demo.dto.response.TokenRefreshResponse;
+import com.app.demo.entity.Member;
 import com.app.demo.security.handler.annotation.ExtractToken;
 import com.app.demo.service.MemberService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,5 +49,14 @@ public class MemberController {
     public BaseResponse<TokenRefreshResponse> refresh(@ExtractToken String refreshToken) {
         TokenRefreshResponse response = memberService.refresh(refreshToken);
         return BaseResponse.onSuccess(response);
+    }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회 성공")})
+    @Operation(summary = "회원탈퇴 API", description = "회원을 삭제합니다.")
+    @DeleteMapping("/delete")
+    public BaseResponse<String> delete(@RequestParam Long memberId) {
+        memberService.deleteMember(memberId);
+        return BaseResponse.onSuccess("회원탈퇴 성공");
     }
 }

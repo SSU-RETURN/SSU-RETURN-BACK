@@ -24,7 +24,7 @@ public class MemberPlaylistMusic {
     @JoinColumn(name = "member_playlist_id")
     private MemberPlaylist memberPlaylist;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 

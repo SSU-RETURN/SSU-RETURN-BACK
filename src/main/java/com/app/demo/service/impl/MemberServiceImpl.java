@@ -9,6 +9,8 @@ import com.app.demo.dto.request.LoginRequestDTO;
 import com.app.demo.dto.response.LoginResponseDTO;
 import com.app.demo.dto.response.TokenRefreshResponse;
 import com.app.demo.entity.Member;
+import com.app.demo.repository.AIPlaylistRepository;
+import com.app.demo.repository.DiaryRepository;
 import com.app.demo.repository.MemberRepository;
 import com.app.demo.security.provider.JwtTokenProvider;
 import com.app.demo.service.MemberService;
@@ -67,7 +69,11 @@ public class MemberServiceImpl implements MemberService {
     public LoginResponseDTO.OAuthResponse login(LoginRequestDTO loginRequestDTO) {
         // 사용자 ID로 멤버 조회
         Member member = memberRepository.findByUserID(loginRequestDTO.getUserID())
-                .orElseThrow(() -> new AuthException(ErrorStatus.USER_NOT_FOUND)); // 예외 처리 강화 필요
+                .orElseThrow(() -> new AuthException(ErrorStatus.USER_NOT_FOUND));
+
+        // 회원 존재 여부 검증
+        if(member.getIsDelete()==0)
+            throw new AuthException(ErrorStatus.USER_NOT_FOUND);
 
         // 패스워드 검증
         if (!passwordEncoder.matches(loginRequestDTO.getPassword(), member.getPassword())) {
@@ -114,9 +120,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
 
-    // 회원 삭제 로직
+
+    @Override
     @Transactional
-    public void deleteMember(Member member) {
-        memberRepository.delete(member);
+    public void deleteMember(Long memberId) {
+        Member member = memberRepository.findByMemberId(memberId);
+        member.setIsDelete(0);
     }
 }

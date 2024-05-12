@@ -4,6 +4,8 @@ package com.app.demo.entity;
 import com.app.demo.entity.enums.Preference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -33,6 +35,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Preference preference;
 
+    @ColumnDefault("1")  //삭제시 0
+    private int isDelete;
 
     private String refreshToken; // 리프레시 토큰
 
