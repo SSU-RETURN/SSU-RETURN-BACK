@@ -24,7 +24,7 @@ public class Diary {
     @Column(name = "diary_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member")
     private Member member;
 

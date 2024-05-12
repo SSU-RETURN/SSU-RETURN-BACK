@@ -19,9 +19,9 @@ spring:
     activate:
       on-profile: local
   datasource:
-    username: root
-    password: root
-    url: jdbc:mariadb://localhost:3306/edupackdb
+    username: ${DB_USERNAME}
+    password: ${DB_PW}
+    url: ${DB_URL}
     driver-class-name: org.mariadb.jdbc.Driver
   sql:
     init:
@@ -44,9 +44,9 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    username: root
-    password: root
-    url: jdbc:mariadb://localhost:3306/edupackdb
+    username: ${DB_USERNAME}
+    password: ${DB_PW}
+    url: ${DB_URL}
     driver-class-name: org.mariadb.jdbc.Driver
   sql:
     init:

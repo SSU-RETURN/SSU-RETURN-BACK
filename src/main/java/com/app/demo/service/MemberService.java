@@ -10,6 +10,6 @@ public interface MemberService {
     Member findUserById(Long userId);
     public Member signUp(MemberSignupDTO memberSignUpDto) throws Exception;
     public LoginResponseDTO.OAuthResponse login (LoginRequestDTO loginRequestDTO);
-    void deleteMember(Member member);
+    void deleteMember(Long memberId);
     public TokenRefreshResponse refresh(String refreshToken);
 }
