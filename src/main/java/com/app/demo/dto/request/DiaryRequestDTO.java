@@ -17,7 +17,7 @@ public class DiaryRequestDTO{
         private Emotion memberEmotion;
         private String pictureKey;
         private LocalDate writtenDate;
-        //private List<Long> musicList;
+        private List<Long> musicList;
     }
 
     @Data

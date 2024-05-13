@@ -43,7 +43,7 @@ public class DiaryServiceImpl implements DiaryService {
     public Diary createDiary(DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
         List<Float> aiEmotion = extractAiEmotion(requestDTO.getContent());
-        //List<Long> musicList = requestDTO.getMusicList;
+        List<Long> musicList = requestDTO.getMusicList();
 
         AIPlaylist aiPlaylist = AIPlaylist.builder()
                 .memberId(requestDTO.getMemberId())
