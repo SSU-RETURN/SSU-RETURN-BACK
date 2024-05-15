@@ -29,10 +29,4 @@ public class DiaryConverter {
                 .memberEmotion(diary.getMemberEmotion())
                 .build();
     }
-
-    public static DiaryResponseDTO.DiaryIdDTO toDiaryIdDTO(Diary diary){
-        return DiaryResponseDTO.DiaryIdDTO.builder()
-                .id(diary.getDiaryId())
-                .build();
-    }
 }

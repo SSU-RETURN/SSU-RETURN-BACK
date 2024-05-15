@@ -40,12 +40,4 @@ public class DiaryResponseDTO {
         private Long memberPlaylistId;
     }
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class DiaryIdDTO{
-        private Long id;
-    }
-
 }

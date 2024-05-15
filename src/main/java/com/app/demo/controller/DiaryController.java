@@ -69,9 +69,9 @@ public class DiaryController {
     @Operation(summary = "일기생성", description = "일기생성 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON201", description="등록성공")})
     @PostMapping("/create")
-    public BaseResponse<DiaryResponseDTO.DiaryIdDTO> createDiary(@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
+    public BaseResponse<DiaryResponseDTO.DiaryContentDTO> createDiary(@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
         Diary diary = diaryService.createDiary(requestDTO);
-        DiaryResponseDTO.DiaryIdDTO responseDTO = DiaryConverter.toDiaryIdDTO(diary);
+        DiaryResponseDTO.DiaryContentDTO responseDTO = DiaryConverter.toDiaryContentDTO(diary);
         return BaseResponse.onSuccess(responseDTO);
     }
 
