@@ -29,7 +29,7 @@ public class AIPlaylistResponseDTO {
     public static class TestDTO{
         private Long memberId;
         private Long diaryId;
-        private Emotion aiEmotion;
+        private List<Float> aiEmotion;
         private LocalDate playlistDate;
     }
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,8 @@ public class DiaryServiceImpl implements DiaryService {
     @Override
     public Diary createDiary(DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
-        Emotion aiEmotion = extractAiEmotion(requestDTO.getContent());
-        //List<Long> musicList = requestDTO.getMusicList;
+        List<Float> aiEmotion = extractAiEmotion(requestDTO.getContent());
+        List<Long> musicList = requestDTO.getMusicList();
 
         AIPlaylist aiPlaylist = AIPlaylist.builder()
                 .memberId(requestDTO.getMemberId())
@@ -54,8 +55,6 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
         //.musicList(musicList)
         Diary diary = Diary.builder()
-                .member(member)
-                .memberId(requestDTO.getMemberId())
                 .content(requestDTO.getContent())
                 .memberEmotion(requestDTO.getMemberEmotion())
                 .aiEmotion(aiEmotion)
@@ -79,8 +78,9 @@ public class DiaryServiceImpl implements DiaryService {
 
     }
 
-    private Emotion extractAiEmotion(String content) {
-        return Emotion.HAPPY;       //더미값
+    private List<Float> extractAiEmotion(String content) {
+        List<Float> aiEmotion = new ArrayList<>();
+        return aiEmotion;
     }
 
     @Override
