@@ -33,7 +33,6 @@ public class AIPlaylist {
     @Column(name = "diary_id")
     private Long diaryId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "ai_emotion")
     private List<Float> aiEmotion;
 
