@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/memberplaylist")
+@RequestMapping("/api/playlist")
 public class MemberPlaylistController {
 
     private final MemberPlaylistService memberPlaylistService;
@@ -42,8 +42,8 @@ public class MemberPlaylistController {
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Member 날짜음악조회", description = "Member플리 날짜로 검색하여 음악 조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
-    @GetMapping("/details1/{memberId}/{playlistDate}")
-    public BaseResponse<MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO> getMemberPlaylistMusicsByDate(@PathVariable Long memberId, @PathVariable LocalDate playlistDate){
+    @GetMapping("/date/{playlistDate}")
+    public BaseResponse<MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO> getMemberPlaylistMusicsByDate(@RequestParam(name="memberId") Long memberId, @PathVariable LocalDate playlistDate){
         MemberPlaylist memberPlaylist = memberPlaylistService.getMemberPlaylistByDate(memberId, playlistDate);
         MemberPlaylistConverter memberPlaylistConverter = new MemberPlaylistConverter(musicRepository, memberPlaylistMusicRepository);
         MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO memberPlaylistMusicsDTO = memberPlaylistConverter.toMemberPlaylistMusics(memberPlaylist);
@@ -53,8 +53,8 @@ public class MemberPlaylistController {
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Member 감정음악조회", description = "Member플리 감정으로 검색하여 음악 조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
-    @GetMapping("/details2/{memberId}/{memberEmotion}")
-    public BaseResponse<MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO> getMemberPlaylistMusicsByEmotion(@PathVariable Long memberId, @PathVariable Emotion memberEmotion){
+    @GetMapping("/emotion/{memberEmotion}")
+    public BaseResponse<MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO> getMemberPlaylistMusicsByEmotion(@RequestParam(name="memberId") Long memberId, @PathVariable Emotion memberEmotion){
         List<MemberPlaylist> memberPlaylistList = memberPlaylistService.getMemberPlaylistListByEmotion(memberId, memberEmotion);
         MemberPlaylistConverter memberPlaylistConverter = new MemberPlaylistConverter(musicRepository, memberPlaylistMusicRepository);
         MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO memberPlaylistMusicsDTO = memberPlaylistConverter.toMemberPlaylistListMusics(memberPlaylistList);

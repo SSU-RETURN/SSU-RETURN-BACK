@@ -18,29 +18,28 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/aiplaylist")
+@RequestMapping("/api/playlist")
 public class AIPlaylistController {
 
     private final AIPlaylistService aiPlaylistService;
     private final AIPlaylistMusicRepository aiPlaylistMusicRepository;
     private final MusicRepository musicRepository;
-    private final DiaryRepository diaryRepository;
+
 
 
     @Autowired
     public AIPlaylistController(AIPlaylistService aiPlaylistService,
                                 AIPlaylistMusicRepository aiPlaylistMusicRepository,
-                                MusicRepository musicRepository, DiaryRepository diaryRepository) {
+                                MusicRepository musicRepository) {
         this.aiPlaylistService = aiPlaylistService;
         this.aiPlaylistMusicRepository = aiPlaylistMusicRepository;
         this.musicRepository = musicRepository;
-        this.diaryRepository = diaryRepository;
     }
 
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "AI플레이리스트음악조회", description = "AI플레이리스트 내 음악 조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
-    @GetMapping("/details/{diaryId}")
+    @GetMapping("/ai/{diaryId}")
     public BaseResponse<AIPlaylistResponseDTO.AIPlaylistMusicsDTO> getAIPlaylistMusics(@PathVariable Long diaryId){
         AIPlaylist aiPlaylist = aiPlaylistService.getAiPlaylist(diaryId);
         AIPlaylistConverter converter = new AIPlaylistConverter(aiPlaylistMusicRepository, musicRepository);
