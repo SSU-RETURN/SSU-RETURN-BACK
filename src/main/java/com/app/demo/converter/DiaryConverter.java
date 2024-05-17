@@ -13,7 +13,7 @@ public class DiaryConverter {
     public static DiaryResponseDTO.DiaryContentDTO toDiaryContentDTO(Diary diary){
         return DiaryResponseDTO.DiaryContentDTO.builder()
                 .id(diary.getDiaryId())
-                .AIEmotion(diary.getAiEmotion())
+               // .AIEmotion(diary.getAiEmotion())
                 .memberEmotion(diary.getMemberEmotion())
                 .content(diary.getContent())
                 .pictureKey(diary.getPictureKey())

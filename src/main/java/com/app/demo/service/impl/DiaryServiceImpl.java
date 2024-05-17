@@ -57,7 +57,7 @@ public class DiaryServiceImpl implements DiaryService {
         Diary diary = Diary.builder()
                 .content(requestDTO.getContent())
                 .memberEmotion(requestDTO.getMemberEmotion())
-                .aiEmotion(aiEmotion)
+          //      .aiEmotion(aiEmotion)
                 .pictureKey(requestDTO.getPictureKey())
                 .writtenDate(requestDTO.getWrittenDate())
                 .aiPlaylist(aiPlaylist)
