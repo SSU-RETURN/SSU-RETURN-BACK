@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Builder
@@ -32,9 +33,8 @@ public class AIPlaylist {
     @Column(name = "diary_id")
     private Long diaryId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "ai_emotion")
-    private Emotion aiEmotion;
+    private List<Float> aiEmotion;
 
     @Column(name = "playlist_date")
     private LocalDate playlistDate;

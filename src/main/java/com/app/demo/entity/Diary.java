@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -38,9 +39,8 @@ public class Diary {
     @Column(name = "member_emotion")
     private Emotion memberEmotion;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ai_emotion")
-    private Emotion aiEmotion;
+    @OneToOne(mappedBy = "diary", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    private AiEmotion aiEmotion;
 
     @Column(name = "picture_key", length = 200, nullable = true)
     private String pictureKey;

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.List;
+
 public class DiaryRequestDTO{
     @Data
     @Builder
@@ -13,10 +15,9 @@ public class DiaryRequestDTO{
         private Long memberId;
         private String content;
         private Emotion memberEmotion;
-        private Emotion aiEmotion;
         private String pictureKey;
         private LocalDate writtenDate;
-        //private List<Long> musicList;
+        private List<Long> musicList;
     }
 
     @Data

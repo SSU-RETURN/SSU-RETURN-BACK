@@ -13,9 +13,7 @@ public class DiaryConverter {
     public static DiaryResponseDTO.DiaryContentDTO toDiaryContentDTO(Diary diary){
         return DiaryResponseDTO.DiaryContentDTO.builder()
                 .id(diary.getDiaryId())
-                .member(diary.getMember())
-                .memberId(diary.getMemberId())
-                .AIEmotion(diary.getAiEmotion())
+               // .AIEmotion(diary.getAiEmotion())
                 .memberEmotion(diary.getMemberEmotion())
                 .content(diary.getContent())
                 .pictureKey(diary.getPictureKey())
@@ -29,6 +27,12 @@ public class DiaryConverter {
                 .id(diary.getDiaryId())
                 .writtenDate(diary.getWrittenDate())
                 .memberEmotion(diary.getMemberEmotion())
+                .build();
+    }
+
+    public static DiaryResponseDTO.DiaryIdDTO toDiaryIdDTO(Diary diary){
+        return DiaryResponseDTO.DiaryIdDTO.builder()
+                .id(diary.getDiaryId())
                 .build();
     }
 }
