@@ -17,15 +17,8 @@ public class AiEmotion {
     private Long id;
 
     private Integer sad;
-
     private Integer happy;
-
     private Integer angry;
-
-    private Integer neutral;
-
     private Integer surprise;
-
-    private Integer anxious;
 
 }
