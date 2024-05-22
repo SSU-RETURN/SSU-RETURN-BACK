@@ -20,14 +20,16 @@ public class AiEmotion {
     @JoinColumn(name = "diary_id")
     private Diary diary;
 
-    private Float sad;
+    private Integer sad;
 
-    private Float happy;
+    private Integer happy;
 
-    private Float angry;
+    private Integer angry;
 
-    private Float surprise;
+    private Integer neutral;
 
-    private Float anxious;
+    private Integer surprise;
+
+    private Integer anxious;
 
 }
