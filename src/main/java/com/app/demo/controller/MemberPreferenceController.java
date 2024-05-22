@@ -42,7 +42,7 @@ public class MemberPreferenceController {
     }
 
 
-    /*
+
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "취향", description = "취향조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
@@ -52,6 +52,6 @@ public class MemberPreferenceController {
         MemberPreferenceResponseDTO.MemberPreferenceContentDTO responseDTO = MemberPreferenceConverter.toMemberPreferenceContentDTO(memberPreference);
         return BaseResponse.onSuccess(responseDTO);
     }
-     */
+
 
 }
