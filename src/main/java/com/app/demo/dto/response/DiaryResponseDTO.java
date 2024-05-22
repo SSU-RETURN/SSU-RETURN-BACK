@@ -11,6 +11,7 @@ import lombok.Data;
 
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class DiaryResponseDTO {
 
@@ -29,16 +30,22 @@ public class DiaryResponseDTO {
     @AllArgsConstructor
     @Builder
     public static class DiaryContentDTO {
-        private Member member;
-        private Long memberId;
         private Long id;
         private Emotion memberEmotion;
-        private Emotion AIEmotion;
+        private List<Float> AIEmotion;
         private LocalDate writtenDate;
         private String content;
         private String pictureKey;
         private Long aiPlaylistId;
         private Long memberPlaylistId;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class DiaryIdDTO{
+        private Long id;
     }
 
 }

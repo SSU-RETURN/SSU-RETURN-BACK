@@ -4,6 +4,9 @@ package com.app.demo.entity;
 import com.app.demo.entity.enums.Preference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 // import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -23,7 +26,7 @@ public class Member {
     @Column(nullable = false, unique = true, length = 30)
     private String userID;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 255)
     private String password;
 
     @Column(nullable = false)
@@ -32,24 +35,14 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Preference preference;
 
-
-
-//    @Enumerated(EnumType.STRING)
-//    private SocialType socialType;
-
-    private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
+    @ColumnDefault("1")  //삭제시 0
+    private int isDelete;
 
     private String refreshToken; // 리프레시 토큰
 
 
-    /* 비밀번호 암호화 메소드
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);
-    }
-     */
-
-    public void updateRefreshToken(String updateRefreshToken) {
-        this.refreshToken = updateRefreshToken;
     }
 
 }

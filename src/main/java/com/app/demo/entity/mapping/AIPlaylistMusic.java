@@ -25,10 +25,13 @@ public class AIPlaylistMusic {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ai_playlist_id")
+    @JoinColumn(name = "ai_playlist")
     private AIPlaylist aiPlaylist;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "ai_playlist_id")
+    private Long aiPlaylistId;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id")
     private Member member;
 

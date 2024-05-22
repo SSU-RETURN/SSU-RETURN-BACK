@@ -1,7 +1,7 @@
 package com.app.demo.entity.mapping;
 
+import com.app.demo.entity.MemberPreferencePlaylist;
 import com.app.demo.entity.Music;
-import com.app.demo.entity.PreferencePlaylist;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "preference_playlist_music")
 
-public class PreferencePlaylistMusic {
+public class MemberPreferencePlaylistMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "preference_playlist_music_id")
@@ -22,7 +22,7 @@ public class PreferencePlaylistMusic {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "preference_playlist_id")
-    private PreferencePlaylist preferencePlaylist;
+    private MemberPreferencePlaylist memberPreferencePlaylist;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")

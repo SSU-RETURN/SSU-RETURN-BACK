@@ -1,0 +1,4 @@
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  accessTokenValidityInMilliseconds: ${JWT_ACCESS_TOKEN_TIME}
+  refreshTokenValidityInMilliseconds: ${JWT_REFRESH_TOKEN_TIME}

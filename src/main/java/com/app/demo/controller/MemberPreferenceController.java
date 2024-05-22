@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/memberPreference")
+@RequestMapping("/api/preference")
 public class MemberPreferenceController {
     @Autowired
     private final MemberPreferenceService memberPreferenceService;
@@ -40,6 +40,7 @@ public class MemberPreferenceController {
         MemberPreference memberPreference = memberPreferenceService.updateMemberPreference(requestDTO);
         return BaseResponse.onSuccess("취향수정성공");
     }
+
 
 
     @ResponseStatus(code = HttpStatus.OK)

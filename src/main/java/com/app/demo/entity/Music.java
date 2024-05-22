@@ -2,7 +2,7 @@ package com.app.demo.entity;
 
 
 import com.app.demo.entity.mapping.AIPlaylistMusic;
-import com.app.demo.entity.mapping.PreferencePlaylistMusic;
+import com.app.demo.entity.mapping.MemberPreferencePlaylistMusic;
 import com.app.demo.entity.mapping.MemberPlaylistMusic;
 import jakarta.persistence.*;
 import lombok.*;
