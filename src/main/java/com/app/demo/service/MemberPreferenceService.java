@@ -8,5 +8,5 @@ public interface MemberPreferenceService {
 
     MemberPreference createMemberPreference(MemberPreferenceRequestDTO.CreateMemberPreferenceRequestDTO requestDTO);
     MemberPreference updateMemberPreference(MemberPreferenceRequestDTO.UpdateMemberPreferenceRequestDTO requestDTO);
-    MemberPreference getMemberPreference(Long preferenceId);
+    MemberPreference getMemberPreferenceByMemberId(Long memberId);
 }

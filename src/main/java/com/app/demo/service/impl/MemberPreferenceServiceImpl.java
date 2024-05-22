@@ -35,22 +35,23 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
 
     @Override
     public MemberPreference updateMemberPreference(MemberPreferenceRequestDTO.UpdateMemberPreferenceRequestDTO requestDTO){
-        MemberPreference memberPreference = MemberPreference.builder()
-                .memberPreferenceId(requestDTO.getMemberPreferenceId())
-                .genreFirst(requestDTO.getGenreFirst())
-                .genreSecond(requestDTO.getGenreSecond())
-                .genreThird(requestDTO.getGenreThird())
-                .preferenceSad(requestDTO.getPreferenceSad())
-                .preferenceHappy(requestDTO.getPreferenceHappy())
-                .preferenceAngry(requestDTO.getPreferenceAngry())
-                .preferenceRomance(requestDTO.getPreferenceRomance())
-                .preferenceAnxious(requestDTO.getPreferenceAnxious())
-                .build();
-        return memberPreferenceRepository.save(memberPreference);
+        Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
+        MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
+
+        memberPreference.setPreferenceAngry(requestDTO.getPreferenceAngry());
+        memberPreference.setPreferenceAnxious(requestDTO.getPreferenceAnxious());
+        memberPreference.setPreferenceHappy(requestDTO.getPreferenceHappy());
+        memberPreference.setPreferenceSad(requestDTO.getPreferenceSad());
+        memberPreference.setPreferenceRomance(requestDTO.getPreferenceRomance());
+        memberPreference.setGenreFirst(requestDTO.getGenreFirst());
+        memberPreference.setGenreSecond(requestDTO.getGenreSecond());
+        memberPreference.setGenreThird(requestDTO.getGenreThird());
+        return memberPreference;
     }
 
     @Override
-    public MemberPreference getMemberPreference(Long memberPreferenceId) {
-        return memberPreferenceRepository.findById(memberPreferenceId).orElse(null);
+    public MemberPreference getMemberPreferenceByMemberId(Long memberId) {
+        Member member = memberRepository.findByMemberId(memberId);
+        return memberPreferenceRepository.findByMember(member);
     }
 }
