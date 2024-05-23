@@ -39,6 +39,7 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
         Long memberPreferenceId = memberPreferenceRepository.findByMember(member).getMemberPreferenceId();
         MemberPreference memberPreference = MemberPreference.builder()
                 .memberPreferenceId(memberPreferenceId)
+                .member(member)
                 .genreFirst(requestDTO.getGenreFirst())
                 .genreSecond(requestDTO.getGenreSecond())
                 .genreThird(requestDTO.getGenreThird())
