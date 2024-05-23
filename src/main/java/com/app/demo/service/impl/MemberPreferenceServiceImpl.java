@@ -49,19 +49,6 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
                 .preferenceSad(requestDTO.getPreferenceSad())
                 .build();
 
-
-                /*
-                memberPreferenceRepository.findByMember(member);
-        memberPreference.setPreferenceAngry(requestDTO.getPreferenceAngry());
-        memberPreference.setPreferenceAnxious(requestDTO.getPreferenceAnxious());
-        memberPreference.setPreferenceHappy(requestDTO.getPreferenceHappy());
-        memberPreference.setPreferenceSad(requestDTO.getPreferenceSad());
-        memberPreference.setPreferenceRomance(requestDTO.getPreferenceRomance());
-        memberPreference.setGenreFirst(requestDTO.getGenreFirst());
-        memberPreference.setGenreSecond(requestDTO.getGenreSecond());
-        memberPreference.setGenreThird(requestDTO.getGenreThird());
-
-                 */
         return memberPreferenceRepository.save(memberPreference);
     }
 

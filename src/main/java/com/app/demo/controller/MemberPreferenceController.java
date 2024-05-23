@@ -48,6 +48,7 @@ public class MemberPreferenceController {
     @Operation(summary = "취향조회", description = "취향조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @GetMapping("/details/{memberId}")
+
     public BaseResponse<MemberPreferenceResponseDTO.MemberPreferenceContentDTO> getMemberPreference(@PathVariable Long memberId){
         MemberPreference memberPreference = memberPreferenceService.getMemberPreferenceByMemberId(memberId);
         MemberPreferenceResponseDTO.MemberPreferenceContentDTO responseDTO = MemberPreferenceConverter.toMemberPreferenceContentDTO(memberPreference);
