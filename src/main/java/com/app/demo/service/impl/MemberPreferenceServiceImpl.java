@@ -36,22 +36,32 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
     @Override
     public MemberPreference updateMemberPreference(MemberPreferenceRequestDTO.UpdateMemberPreferenceRequestDTO requestDTO){
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
-        MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
+        Long memberPreferenceId = memberPreferenceRepository.findByMember(member).getMemberPreferenceId();
+        MemberPreference memberPreference = MemberPreference.builder()
+                .memberPreferenceId(memberPreferenceId)
+                .genreFirst(requestDTO.getGenreFirst())
+                .genreSecond(requestDTO.getGenreSecond())
+                .genreThird(requestDTO.getGenreThird())
+                .preferenceAnxious(requestDTO.getPreferenceAnxious())
+                .preferenceRomance(requestDTO.getPreferenceRomance())
+                .preferenceAngry(requestDTO.getPreferenceAngry())
+                .preferenceHappy(requestDTO.getPreferenceHappy())
+                .preferenceSad(requestDTO.getPreferenceSad())
+                .build();
 
-        memberPreference.setPreferenceAngry(requestDTO.getPreferenceAngry());
-        memberPreference.setPreferenceAnxious(requestDTO.getPreferenceAnxious());
-        memberPreference.setPreferenceHappy(requestDTO.getPreferenceHappy());
-        memberPreference.setPreferenceSad(requestDTO.getPreferenceSad());
-        memberPreference.setPreferenceRomance(requestDTO.getPreferenceRomance());
-        memberPreference.setGenreFirst(requestDTO.getGenreFirst());
-        memberPreference.setGenreSecond(requestDTO.getGenreSecond());
-        memberPreference.setGenreThird(requestDTO.getGenreThird());
-        return memberPreference;
+        return memberPreferenceRepository.save(memberPreference);
     }
 
     @Override
     public MemberPreference getMemberPreferenceByMemberId(Long memberId) {
         Member member = memberRepository.findByMemberId(memberId);
         return memberPreferenceRepository.findByMember(member);
+    }
+
+    @Override
+    public void deleteMemberPreferenceByMemberId(Long memberId){
+        Member member = memberRepository.findByMemberId(memberId);
+        memberPreferenceRepository.deleteByMember(member);
+        return;
     }
 }
