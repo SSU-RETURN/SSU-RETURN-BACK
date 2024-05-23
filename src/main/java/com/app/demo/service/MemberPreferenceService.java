@@ -9,4 +9,5 @@ public interface MemberPreferenceService {
     MemberPreference createMemberPreference(MemberPreferenceRequestDTO.CreateMemberPreferenceRequestDTO requestDTO);
     MemberPreference updateMemberPreference(MemberPreferenceRequestDTO.UpdateMemberPreferenceRequestDTO requestDTO);
     MemberPreference getMemberPreferenceByMemberId(Long memberId);
+    void deleteMemberPreferenceByMemberId(Long memberId);
 }

@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -44,14 +45,27 @@ public class MemberPreferenceController {
 
 
     @ResponseStatus(code = HttpStatus.OK)
-    @Operation(summary = "취향", description = "취향조회 API입니다")
+    @Operation(summary = "취향조회", description = "취향조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
-    @GetMapping("/details/{memberPreferenceId}")
+    @GetMapping("/details/{memberId}")
     public BaseResponse<MemberPreferenceResponseDTO.MemberPreferenceContentDTO> getMemberPreference(@PathVariable Long memberId){
         MemberPreference memberPreference = memberPreferenceService.getMemberPreferenceByMemberId(memberId);
         MemberPreferenceResponseDTO.MemberPreferenceContentDTO responseDTO = MemberPreferenceConverter.toMemberPreferenceContentDTO(memberPreference);
         return BaseResponse.onSuccess(responseDTO);
     }
 
+
+
+    //테스트용 취향 삭제
+
+    @Transactional
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "취향삭제", description = "취향삭제 API입니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
+    @DeleteMapping("/details/{memberId}")
+    public BaseResponse<String> deleteMemberPreference(@PathVariable Long memberId){
+        memberPreferenceService.deleteMemberPreferenceByMemberId(memberId);
+        return BaseResponse.onSuccess("삭제성공");
+    }
 
 }
