@@ -22,7 +22,7 @@ public class AiEmotionServiceImpl implements AiEmotionService {
     @Override
     public AiEmotion getAiEmotion(String content) {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://34.64.147.34:5000/predict";
+        String url = System.getenv("BERT_URL");
         Map<String, String> body = new HashMap<>();
         body.put("text", content);
 
