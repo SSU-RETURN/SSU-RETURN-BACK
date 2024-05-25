@@ -1,26 +1,27 @@
 package com.app.demo.service.impl;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.dto.response.DiaryResponseDTO;
-import com.app.demo.entity.Diary;
-import com.app.demo.entity.Member;
+import com.app.demo.entity.*;
 import com.app.demo.entity.enums.Emotion;
-import com.app.demo.service.DiaryService;
-import com.app.demo.repository.DiaryRepository;
-import com.app.demo.repository.MemberRepository;
-import com.app.demo.entity.AIPlaylist;
-import com.app.demo.entity.MemberPlaylist;
-import com.app.demo.repository.AIPlaylistRepository;
-import com.app.demo.repository.MemberPlaylistRepository;
+import com.app.demo.entity.enums.Preference;
+import com.app.demo.repository.*;
+import com.app.demo.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -29,58 +30,88 @@ public class DiaryServiceImpl implements DiaryService {
     private final MemberRepository memberRepository;
     private final AIPlaylistRepository aiPlaylistRepository;
     private final MemberPlaylistRepository memberPlaylistRepository;
+    private final MusicRepository musicRepository;
+    private AIPlaylistService aiPlaylistService;
+    private AiEmotionService aiEmotionService;
+    private AiPlaylistMusicService aiPlaylistMusicService;
+    private ChatGPTService chatGPTService;
+    private MemberPreferenceService memberPreferenceService;
+    private MemberPlaylistService memberPlaylistService;
+    private MemberPlaylistMusicService memberPlaylistMusicService;
+
+    @Autowired
+    private AmazonS3 s3Client;
+
+    private final String bucketName = System.getenv("BUCKET_NAME");
 
     @Autowired
     public DiaryServiceImpl(DiaryRepository diaryRepository, MemberRepository memberRepository,
-                            AIPlaylistRepository aiPlaylistRepository, MemberPlaylistRepository memberPlaylistRepository) {
+                            AIPlaylistRepository aiPlaylistRepository, MemberPlaylistRepository memberPlaylistRepository, MusicRepository musicRepository) {
         this.diaryRepository = diaryRepository;
         this.memberRepository = memberRepository;
         this.aiPlaylistRepository = aiPlaylistRepository;
         this.memberPlaylistRepository = memberPlaylistRepository;
+        this.musicRepository = musicRepository;
     }
 
     @Override
     public Diary createDiary(DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
-        List<Float> aiEmotion = extractAiEmotion(requestDTO.getContent());
-        List<Long> musicList = requestDTO.getMusicList();
+        List<Long> MembermusicList = requestDTO.getMusicList();
 
-        AIPlaylist aiPlaylist = AIPlaylist.builder()
-                .memberId(requestDTO.getMemberId())
-                .aiEmotion(aiEmotion)
-                .build();
-        MemberPlaylist memberPlaylist = MemberPlaylist.builder()
-                .memberId(requestDTO.getMemberId())
-                .memberEmotion(requestDTO.getMemberEmotion())
-                .build();
-        //.musicList(musicList)
+        //Bert
+        AiEmotion aiEmotion = aiEmotionService.getAiEmotion(requestDTO.getContent());
+        //chatGPT + 추천음악 저장
+        String preference = String.valueOf(memberPreferenceService.getMemberPreferenceForGPT(member, String.valueOf(requestDTO.getMemberEmotion())));
+        MemberPreference memberPreference = memberPreferenceService.getMemberPreferenceByMemberId(member.getMemberId());
+        String genre = String.join(String.valueOf(memberPreference.getGenreFirst()),",",String.valueOf(memberPreference.getGenreSecond()));
+        List<Music> musicList= chatGPTService.processMusicRecommendations(String.valueOf(requestDTO.getMemberEmotion()), preference, genre);
+        //aiPlaylist 저장
+        AIPlaylist aiPlaylist = aiPlaylistService.createAiPlaylist(member.getMemberId(), requestDTO.getWrittenDate());
+        aiPlaylistMusicService.setAiPlaylistMusic(musicList, aiPlaylist);
+        //memberMusic 변환
+        List<Music> musics= musicRepository.findByIdIn(MembermusicList);
+        //memberPlaylist 저장
+        MemberPlaylist memberPlaylist = memberPlaylistService.createMemberPlaylist(member, requestDTO.getMemberEmotion(), requestDTO.getWrittenDate());
+        memberPlaylistMusicService.setMemberPlaylistMusic(musics, memberPlaylist);
+        //s3 저장
+        String imageUrl = "";
+        if (requestDTO.getPictureKey() != null && !requestDTO.getPictureKey().isEmpty()) {
+            imageUrl = uploadFileToS3(requestDTO.getPictureKey());
+        }
+
+        //다이어리 저장
         Diary diary = Diary.builder()
                 .content(requestDTO.getContent())
                 .memberEmotion(requestDTO.getMemberEmotion())
-          //      .aiEmotion(aiEmotion)
-                .pictureKey(requestDTO.getPictureKey())
+                .aiEmotion(aiEmotion)
+                .pictureKey(imageUrl)
                 .writtenDate(requestDTO.getWrittenDate())
                 .aiPlaylist(aiPlaylist)
                 .memberPlaylist(memberPlaylist)
                 .build();
 
         diaryRepository.save(diary);
-        memberPlaylist.setDiary(diary);
-        memberPlaylist.setPlaylistDate(diary.getWrittenDate());
-        memberPlaylist.setDiaryId(diary.getDiaryId());
         aiPlaylist.setDiary(diary);
-        aiPlaylist.setPlaylistDate(diary.getWrittenDate());
-        aiPlaylist.setDiaryId(diary.getDiaryId());
-        memberPlaylistRepository.save(memberPlaylist);
-        aiPlaylistRepository.save(aiPlaylist);
+        memberPlaylist.setDiary(diary);
 
         return diary;
 
     }
 
-    private List<Float> extractAiEmotion(String content) {
-        List<Float> aiEmotion = new ArrayList<>();
-        return aiEmotion;
+    private String uploadFileToS3(MultipartFile file) {
+        String fileName = generateFileName(file);
+        try {
+            s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), null)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            return s3Client.getUrl(bucketName, fileName).toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Error in storing file to S3", e);
+        }
+    }
+
+    private String generateFileName(MultipartFile file) {
+        return new Date().getTime() + "-" + file.getOriginalFilename().replace(" ", "_");
     }
 
     @Override

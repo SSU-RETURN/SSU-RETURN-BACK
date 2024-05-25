@@ -23,14 +23,12 @@ public class MemberPlaylist {
     private Long memberPlaylistId;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "diary")
+    @JoinColumn(name = "diary_id")
     private Diary diary;
 
-    @Column(name = "diary_id")
-    private Long diaryId;
-
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_emotion")

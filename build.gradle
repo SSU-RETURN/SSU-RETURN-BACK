@@ -52,6 +52,8 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	implementation 'se.michaelthelin.spotify:spotify-web-api-java:8.4.0'
 
+	//s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 }
 
 tasks.named('test') {

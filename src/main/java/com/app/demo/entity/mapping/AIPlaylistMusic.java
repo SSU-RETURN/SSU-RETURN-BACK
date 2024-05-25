@@ -21,19 +21,11 @@ import java.util.Set;
 public class AIPlaylistMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ai_mappingtable_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ai_playlist")
+    @JoinColumn(name = "ai_playlist_id")
     private AIPlaylist aiPlaylist;
-
-    @Column(name = "ai_playlist_id")
-    private Long aiPlaylistId;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id")
-    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")

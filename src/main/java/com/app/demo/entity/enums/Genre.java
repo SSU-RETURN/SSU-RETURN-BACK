@@ -7,7 +7,7 @@ public enum Genre {
     HIPHOP,
     BAND,
     JAZZ,
-    REGGAE,
+    CLASSIC,
     POP,
     ROCK
 }

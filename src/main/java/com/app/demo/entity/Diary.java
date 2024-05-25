@@ -39,7 +39,8 @@ public class Diary {
     @Column(name = "member_emotion")
     private Emotion memberEmotion;
 
-    @OneToOne(mappedBy = "diary", fetch=FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ai_emotion_id")
     private AiEmotion aiEmotion;
 
     @Column(name = "picture_key", length = 200, nullable = true)
