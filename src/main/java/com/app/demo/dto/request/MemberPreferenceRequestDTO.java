@@ -22,7 +22,7 @@ public class MemberPreferenceRequestDTO {
         private Preference preferenceHappy;
         private Preference preferenceAngry;
         private Preference preferenceRomance;
-        private Preference preferenceAnxious;
+        private Preference preferenceSurprise;
     }
 
 
@@ -37,7 +37,7 @@ public class MemberPreferenceRequestDTO {
         private Preference preferenceHappy;
         private Preference preferenceAngry;
         private Preference preferenceRomance;
-        private Preference preferenceAnxious;
+        private Preference preferenceSurprise;
     }
 
 

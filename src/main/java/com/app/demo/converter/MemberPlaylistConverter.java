@@ -62,8 +62,8 @@ public class MemberPlaylistConverter {
     public MemberPlaylistResponseDTO.TestDTO toTestDateDTO(MemberPlaylist memberPlaylist){
         return MemberPlaylistResponseDTO.TestDTO.builder()
                 .playlistId(memberPlaylist.getMemberPlaylistId())
-                .memberId(memberPlaylist.getMemberId())
-                .diaryId(memberPlaylist.getDiaryId())
+                .memberId(memberPlaylist.getMember().getMemberId())
+                .diaryId(memberPlaylist.getDiary().getDiaryId())
                 .pictureKey(memberPlaylist.getDiary().getPictureKey())
                 //.diary(memberPlaylist.getDiary())
                 .build();
@@ -74,8 +74,8 @@ public class MemberPlaylistConverter {
         for(MemberPlaylist memberPlaylist: memberPlaylistList){
             testDTOS.add(MemberPlaylistResponseDTO.TestDTO.builder()
                     .playlistId(memberPlaylist.getMemberPlaylistId())
-                    .memberId(memberPlaylist.getMemberId())
-                    .diaryId(memberPlaylist.getDiaryId())
+                    .memberId(memberPlaylist.getMember().getMemberId())
+                    .diaryId(memberPlaylist.getDiary().getDiaryId())
                     .pictureKey(memberPlaylist.getDiary().getPictureKey())
                     .build());
         }

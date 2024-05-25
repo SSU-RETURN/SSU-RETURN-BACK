@@ -14,7 +14,7 @@ public class MemberPreferenceConverter {
                 .preferenceHappy(memberPreference.getPreferenceHappy())
                 .preferenceAngry(memberPreference.getPreferenceAngry())
                 .preferenceRomance(memberPreference.getPreferenceRomance())
-                .preferenceAnxious(memberPreference.getPreferenceAnxious())
+                .preferenceAnxious(memberPreference.getPreferenceSurprise())
                 .build();
     }
 }

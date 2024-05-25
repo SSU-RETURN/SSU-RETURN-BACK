@@ -38,17 +38,19 @@ public class MemberPlaylistController {
         this.memberPlaylistMusicRepository=memberPlaylistMusicRepository;
     }
 
-
+/*
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Member 날짜음악조회", description = "Member플리 날짜로 검색하여 음악 조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @GetMapping("/date/{playlistDate}")
     public BaseResponse<MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO> getMemberPlaylistMusicsByDate(@RequestParam(name="memberId") Long memberId, @PathVariable LocalDate playlistDate){
-        MemberPlaylist memberPlaylist = memberPlaylistService.getMemberPlaylistByDate(memberId, playlistDate);
+        List<MemberPlaylist> memberPlaylist = memberPlaylistService.getMemberPlaylistByDate(memberId, playlistDate);
         MemberPlaylistConverter memberPlaylistConverter = new MemberPlaylistConverter(musicRepository, memberPlaylistMusicRepository);
         MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO memberPlaylistMusicsDTO = memberPlaylistConverter.toMemberPlaylistMusics(memberPlaylist);
         return BaseResponse.onSuccess(memberPlaylistMusicsDTO);
     }
+
+ */
 
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Member 감정음악조회", description = "Member플리 감정으로 검색하여 음악 조회 API입니다")

@@ -25,7 +25,7 @@ public class AIPlaylistConverter {
 
     public AIPlaylistResponseDTO.AIPlaylistMusicsDTO toAIPlaylistMusics(AIPlaylist aiPlaylist){
         Long aiPlaylistId = aiPlaylist.getAiPlaylistId();
-        List<AIPlaylistMusic> aiPlaylistMusicList = aiPlaylistMusicRepository.findByAiPlaylistId(aiPlaylistId);
+        List<AIPlaylistMusic> aiPlaylistMusicList = aiPlaylistMusicRepository.findByAiPlaylistAiPlaylistId(aiPlaylistId);
         List<Music> aiPlaylistMusics = new ArrayList<>();
         for(AIPlaylistMusic aiPlaylistMusic : aiPlaylistMusicList){
             Long musicId = aiPlaylistMusic.getId();
@@ -35,7 +35,7 @@ public class AIPlaylistConverter {
                 .aiPlaylistMusics(aiPlaylistMusics)
                 .build();
     }
-
+/*
     public AIPlaylistResponseDTO.TestDTO toAITest(AIPlaylist aiPlaylist){
         return AIPlaylistResponseDTO.TestDTO.builder()
                 .playlistDate(aiPlaylist.getPlaylistDate())
@@ -44,5 +44,6 @@ public class AIPlaylistConverter {
                 .memberId(aiPlaylist.getMemberId())
                 .build();
     }
+    */
 
 }

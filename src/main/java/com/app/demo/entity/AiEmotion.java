@@ -16,18 +16,9 @@ public class AiEmotion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "diary_id")
-    private Diary diary;
-
-    private Float sad;
-
-    private Float happy;
-
-    private Float angry;
-
-    private Float surprise;
-
-    private Float anxious;
+    private Integer sad;
+    private Integer happy;
+    private Integer angry;
+    private Integer surprise;
 
 }

@@ -3,6 +3,7 @@ package com.app.demo.controller;
 import com.app.demo.apiPayload.BaseResponse;
 import com.app.demo.dto.MemberSignupDTO;
 import com.app.demo.dto.request.LoginRequestDTO;
+import com.app.demo.dto.request.MemberRequestDTO;
 import com.app.demo.dto.response.LoginResponseDTO;
 import com.app.demo.dto.response.TokenRefreshResponse;
 import com.app.demo.entity.Member;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -52,11 +54,31 @@ public class MemberController {
     }
 
     @ResponseStatus(code = HttpStatus.OK)
-    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회 성공")})
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "삭제 성공")})
     @Operation(summary = "회원탈퇴 API", description = "회원을 삭제합니다.")
     @DeleteMapping("/delete")
     public BaseResponse<String> delete(@RequestParam Long memberId) {
         memberService.deleteMember(memberId);
         return BaseResponse.onSuccess("회원탈퇴 성공");
     }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "수정 성공")})
+    @Operation(summary = "닉네임수정 API", description = "닉네임을 변경합니다.")
+    @PutMapping("/nickname")
+    public BaseResponse<String> updateNickName(@RequestBody MemberRequestDTO.UpdateNicknameDTO updateNicknameDTO){
+        memberService.updateNickname(updateNicknameDTO);
+        return BaseResponse.onSuccess("닉네임 변경 성공");
+    }
+    @ResponseStatus(code = HttpStatus.OK)
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "수정 성공")})
+    @Operation(summary = "비밀번호수정 API", description = "비밀번호를 변경합니다.")
+    @PutMapping("/passwd")
+    public BaseResponse<String> updatePasswd(@RequestBody MemberRequestDTO.UpdatePasswdDTO updatePasswdDTO){
+        memberService.updatePasswd(updatePasswdDTO);
+        return BaseResponse.onSuccess("비밀번호 변경 성공");
+    }
+
+
+
 }

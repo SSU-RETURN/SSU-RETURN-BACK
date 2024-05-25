@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MemberPlaylistRepository extends JpaRepository<MemberPlaylist, Long> {
 
-    MemberPlaylist findByMemberIdAndPlaylistDate(Long memberId, LocalDate playlistDate);
+  //  MemberPlaylist findByMemberMemberIdAndPlaylistDate(Long memberId, LocalDate playlistDate);
     List<MemberPlaylist> findByMemberIdAndMemberEmotion(Long memberId, Emotion memberEmotion);
     List<MemberPlaylist> findByMemberId(Long memberId);
 }

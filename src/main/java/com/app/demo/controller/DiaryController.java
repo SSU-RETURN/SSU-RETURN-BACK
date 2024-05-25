@@ -4,8 +4,11 @@ import com.app.demo.apiPayload.BaseResponse;
 import com.app.demo.converter.DiaryConverter;
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.dto.response.DiaryResponseDTO;
+import com.app.demo.entity.AiEmotion;
 import com.app.demo.entity.Diary;
 import com.app.demo.entity.Member;
+import com.app.demo.service.AIPlaylistService;
+import com.app.demo.service.AiEmotionService;
 import com.app.demo.service.DiaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,6 +27,10 @@ import java.util.stream.Collectors;
 public class DiaryController {
     @Autowired
     private final DiaryService diaryService;
+
+    @Autowired
+    private AiEmotionService aiEmotionService;
+    private AIPlaylistService aiPlaylistService;
     public DiaryController(DiaryService diaryService) {
         this.diaryService = diaryService;
     }
@@ -71,6 +78,7 @@ public class DiaryController {
     @PostMapping("/create")
     public BaseResponse<DiaryResponseDTO.DiaryIdDTO> createDiary(@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
         Diary diary = diaryService.createDiary(requestDTO);
+        aiPlaylistService.createAiPlaylist(requestDTO.getMemberId(), requestDTO.getWrittenDate());
         DiaryResponseDTO.DiaryIdDTO responseDTO = DiaryConverter.toDiaryIdDTO(diary);
         return BaseResponse.onSuccess(responseDTO);
     }
@@ -80,7 +88,7 @@ public class DiaryController {
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "수정성공")})
     @PutMapping("/update")
     public BaseResponse<String> updateDiary(@RequestBody DiaryRequestDTO.UpdateDiaryRequestDTO requestDTO){
-        Diary diary =diaryService.updateDiary(requestDTO);
+        diaryService.updateDiary(requestDTO);
         return BaseResponse.onSuccess("일기수정완료");
     }
 
