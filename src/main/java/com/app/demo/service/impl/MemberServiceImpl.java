@@ -10,8 +10,10 @@ import com.app.demo.dto.request.MemberRequestDTO;
 import com.app.demo.dto.response.LoginResponseDTO;
 import com.app.demo.dto.response.TokenRefreshResponse;
 import com.app.demo.entity.Member;
+import com.app.demo.entity.MemberPreference;
 import com.app.demo.repository.AIPlaylistRepository;
 import com.app.demo.repository.DiaryRepository;
+import com.app.demo.repository.MemberPreferenceRepository;
 import com.app.demo.repository.MemberRepository;
 import com.app.demo.security.provider.JwtTokenProvider;
 import com.app.demo.service.MemberService;
@@ -41,6 +43,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberConverter memberConverter;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberPreferenceRepository memberPreferenceRepository;
     @Override
     public Member findUserById(Long memberId) {
         return memberRepository
@@ -94,7 +97,7 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         // 토큰 반환
-        return memberConverter.convertToOAuthResponse(member, jwtToken.getAccessToken(), jwtToken.getRefreshToken());
+        return memberConverter.convertToOAuthResponse(member, jwtToken.getAccessToken(), jwtToken.getRefreshToken(), isPreference(member));
     }
 
     // 토큰 새로 고침 로직
@@ -146,7 +149,13 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
     }
 
-
+    public Integer isPreference(Member member){
+        MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
+        if(memberPreference!=null){
+            return 1;
+        }
+        return 0;
+    }
 
 
 

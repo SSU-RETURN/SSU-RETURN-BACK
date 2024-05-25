@@ -15,6 +15,7 @@ public class LoginResponseDTO {
         String accessToken;
         String refreshToken;
         Boolean isLogin;
+        Integer isPreference;
     }
 
     @Getter

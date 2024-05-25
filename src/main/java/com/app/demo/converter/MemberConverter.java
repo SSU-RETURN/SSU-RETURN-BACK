@@ -6,12 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MemberConverter {
-    public LoginResponseDTO.OAuthResponse convertToOAuthResponse(Member member, String accessToken, String refreshToken) {
+    public LoginResponseDTO.OAuthResponse convertToOAuthResponse(Member member, String accessToken, String refreshToken, Integer isPreference) {
         return LoginResponseDTO.OAuthResponse.builder()
                 .memberId(member.getMemberId())
                 .nickname(member.getNickname())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .isPreference(isPreference)
                 .isLogin(true)
                 .build();
     }
