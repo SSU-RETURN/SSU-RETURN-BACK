@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberPreferenceRepository extends JpaRepository<MemberPreference, Long> {
     MemberPreference findByMember(Member member);
+    void deleteByMember(Member member);
 }

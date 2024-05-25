@@ -29,7 +29,7 @@ public class MemberPreferenceRequestDTO {
     @Data
     @Builder
     public static class UpdateMemberPreferenceRequestDTO{
-        private Long memberPreferenceId;
+        private Long memberId;
         private Genre genreFirst;
         private Genre genreSecond;
         private Genre genreThird;
