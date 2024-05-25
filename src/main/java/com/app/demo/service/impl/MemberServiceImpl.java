@@ -6,6 +6,7 @@ import com.app.demo.apiPayload.exception.UserException;
 import com.app.demo.converter.MemberConverter;
 import com.app.demo.dto.MemberSignupDTO;
 import com.app.demo.dto.request.LoginRequestDTO;
+import com.app.demo.dto.request.MemberRequestDTO;
 import com.app.demo.dto.response.LoginResponseDTO;
 import com.app.demo.dto.response.TokenRefreshResponse;
 import com.app.demo.entity.Member;
@@ -120,12 +121,33 @@ public class MemberServiceImpl implements MemberService {
         return new TokenRefreshResponse(newTokens.getAccessToken(), newTokens.getRefreshToken(), "Bearer", expiresIn);
     }
 
-
-
     @Override
     @Transactional
     public void deleteMember(Long memberId) {
         Member member = memberRepository.findByMemberId(memberId);
         member.setIsDelete(0);
     }
+
+
+    @Transactional
+    @Override
+    public void updateNickname(MemberRequestDTO.UpdateNicknameDTO updateNicknameDTO){
+        Member member = memberRepository.findByMemberId(updateNicknameDTO.getMemberId());
+        member.setNickname(updateNicknameDTO.getNewNickname());
+        memberRepository.save(member);
+    }
+
+    @Transactional
+    @Override
+    public void updatePasswd(MemberRequestDTO.UpdatePasswdDTO updatePasswdDTO){
+        Member member = memberRepository.findByMemberId(updatePasswdDTO.getMemberId());
+        member.setPassword(updatePasswdDTO.getNewPasswd());
+        member.passwordEncode(passwordEncoder);
+        memberRepository.save(member);
+    }
+
+
+
+
+
 }
