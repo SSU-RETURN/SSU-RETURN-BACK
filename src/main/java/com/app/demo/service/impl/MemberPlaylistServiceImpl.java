@@ -1,6 +1,8 @@
 package com.app.demo.service.impl;
 
 
+import com.app.demo.entity.AIPlaylist;
+import com.app.demo.entity.Member;
 import com.app.demo.entity.MemberPlaylist;
 import com.app.demo.entity.Music;
 import com.app.demo.entity.enums.Emotion;
@@ -8,6 +10,7 @@ import com.app.demo.entity.mapping.MemberPlaylistMusic;
 import com.app.demo.repository.MemberPlaylistMusicRepository;
 import com.app.demo.repository.MemberPlaylistRepository;
 import com.app.demo.service.MemberPlaylistService;
+import com.app.demo.service.MusicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ import java.util.List;
 public class MemberPlaylistServiceImpl implements MemberPlaylistService {
 
     private final MemberPlaylistRepository memberPlaylistRepository;
+    private MusicService musicService;
+
 
     @Autowired
     public MemberPlaylistServiceImpl(MemberPlaylistRepository memberPlaylistRepository) {
@@ -40,5 +45,11 @@ public class MemberPlaylistServiceImpl implements MemberPlaylistService {
         return memberPlaylistRepository.findByMemberId(memberId);
     }
 
+    @Override
+    public MemberPlaylist createMemberPlaylist(Member member) {
+        MemberPlaylist playlist = MemberPlaylist.builder().member(member).build();
+        memberPlaylistRepository.save(playlist);
+        return playlist;
+    }
 }
 

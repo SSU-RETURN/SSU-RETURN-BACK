@@ -3,6 +3,7 @@ import com.app.demo.dto.request.MemberPreferenceRequestDTO;
 import com.app.demo.dto.response.MemberPreferenceResponseDTO;
 import com.app.demo.entity.Member;
 import com.app.demo.entity.MemberPreference;
+import com.app.demo.entity.enums.Preference;
 import com.app.demo.repository.MemberPreferenceRepository;
 import com.app.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
                 .preferenceHappy(requestDTO.getPreferenceHappy())
                 .preferenceAngry(requestDTO.getPreferenceAngry())
                 .preferenceRomance(requestDTO.getPreferenceRomance())
-                .preferenceAnxious(requestDTO.getPreferenceAnxious())
+                .preferenceSurprise(requestDTO.getPreferenceSurprise())
                 .build();
         return memberPreferenceRepository.save(memberPreference);
     }
@@ -43,7 +44,7 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
                 .genreFirst(requestDTO.getGenreFirst())
                 .genreSecond(requestDTO.getGenreSecond())
                 .genreThird(requestDTO.getGenreThird())
-                .preferenceAnxious(requestDTO.getPreferenceAnxious())
+                .preferenceSurprise(requestDTO.getPreferenceSurprise())
                 .preferenceRomance(requestDTO.getPreferenceRomance())
                 .preferenceAngry(requestDTO.getPreferenceAngry())
                 .preferenceHappy(requestDTO.getPreferenceHappy())
@@ -65,4 +66,18 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
         memberPreferenceRepository.deleteByMember(member);
         return;
     }
+
+    @Override
+    public Preference getMemberPreferenceForGPT(Member member, String emotion){
+        MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
+        return switch (emotion) {
+            case "HAPPY" -> memberPreference.getPreferenceHappy();
+            case "SAD" -> memberPreference.getPreferenceSad();
+            case "ANGRY" -> memberPreference.getPreferenceAngry();
+            case "ROMANCE" -> memberPreference.getPreferenceRomance();
+            default -> memberPreference.getPreferenceSurprise();
+        };
+    }
+
+
 }

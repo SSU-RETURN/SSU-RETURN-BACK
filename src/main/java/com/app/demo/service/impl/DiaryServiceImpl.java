@@ -2,16 +2,11 @@ package com.app.demo.service.impl;
 
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.dto.response.DiaryResponseDTO;
-import com.app.demo.entity.Diary;
-import com.app.demo.entity.Member;
+import com.app.demo.entity.*;
 import com.app.demo.entity.enums.Emotion;
-import com.app.demo.service.DiaryService;
-import com.app.demo.repository.DiaryRepository;
-import com.app.demo.repository.MemberRepository;
-import com.app.demo.entity.AIPlaylist;
-import com.app.demo.entity.MemberPlaylist;
-import com.app.demo.repository.AIPlaylistRepository;
-import com.app.demo.repository.MemberPlaylistRepository;
+import com.app.demo.entity.enums.Preference;
+import com.app.demo.repository.*;
+import com.app.demo.service.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,35 +24,51 @@ public class DiaryServiceImpl implements DiaryService {
     private final MemberRepository memberRepository;
     private final AIPlaylistRepository aiPlaylistRepository;
     private final MemberPlaylistRepository memberPlaylistRepository;
+    private final MusicRepository musicRepository;
+    private AIPlaylistService aiPlaylistService;
+    private AiEmotionService aiEmotionService;
+    private AiPlaylistMusicService aiPlaylistMusicService;
+    private ChatGPTService chatGPTService;
+    private MemberPreferenceService memberPreferenceService;
 
     @Autowired
     public DiaryServiceImpl(DiaryRepository diaryRepository, MemberRepository memberRepository,
-                            AIPlaylistRepository aiPlaylistRepository, MemberPlaylistRepository memberPlaylistRepository) {
+                            AIPlaylistRepository aiPlaylistRepository, MemberPlaylistRepository memberPlaylistRepository, MusicRepository musicRepository) {
         this.diaryRepository = diaryRepository;
         this.memberRepository = memberRepository;
         this.aiPlaylistRepository = aiPlaylistRepository;
         this.memberPlaylistRepository = memberPlaylistRepository;
+        this.musicRepository = musicRepository;
     }
 
     @Override
     public Diary createDiary(DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
-        List<Float> aiEmotion = extractAiEmotion(requestDTO.getContent());
-        List<Long> musicList = requestDTO.getMusicList();
+        List<Long> MembermusicList = requestDTO.getMusicList();
 
-        AIPlaylist aiPlaylist = AIPlaylist.builder()
-                .memberId(requestDTO.getMemberId())
-                .aiEmotion(aiEmotion)
-                .build();
+        //Bert
+        AiEmotion aiEmotion = aiEmotionService.getAiEmotion(requestDTO.getContent());
+        //chatGPT + 추천음악 저장
+        String preference = String.valueOf(memberPreferenceService.getMemberPreferenceForGPT(member, String.valueOf(requestDTO.getMemberEmotion())));
+        MemberPreference memberPreference = memberPreferenceService.getMemberPreferenceByMemberId(member.getMemberId());
+        String genre = String.join(String.valueOf(memberPreference.getGenreFirst()),",",String.valueOf(memberPreference.getGenreSecond()));
+        List<Music> musicList= chatGPTService.processMusicRecommendations(String.valueOf(requestDTO.getMemberEmotion()), preference, genre);
+        //aiPlaylist 저장
+        AIPlaylist aiPlaylist = aiPlaylistService.createAiPlaylist(member.getMemberId());
+        aiPlaylistMusicService.setAiPlaylistMusic(musicList, aiPlaylist);
+        //memberMusic 변환
+        List<Music> musics= musicRepository.findByIdIn(MembermusicList);
+
+
         MemberPlaylist memberPlaylist = MemberPlaylist.builder()
-                .memberId(requestDTO.getMemberId())
+                .member(member)
                 .memberEmotion(requestDTO.getMemberEmotion())
                 .build();
-        //.musicList(musicList)
+
         Diary diary = Diary.builder()
                 .content(requestDTO.getContent())
                 .memberEmotion(requestDTO.getMemberEmotion())
-          //      .aiEmotion(aiEmotion)
+                .aiEmotion(aiEmotion)
                 .pictureKey(requestDTO.getPictureKey())
                 .writtenDate(requestDTO.getWrittenDate())
                 .aiPlaylist(aiPlaylist)
@@ -70,7 +81,6 @@ public class DiaryServiceImpl implements DiaryService {
         memberPlaylist.setDiaryId(diary.getDiaryId());
         aiPlaylist.setDiary(diary);
         aiPlaylist.setPlaylistDate(diary.getWrittenDate());
-        aiPlaylist.setDiaryId(diary.getDiaryId());
         memberPlaylistRepository.save(memberPlaylist);
         aiPlaylistRepository.save(aiPlaylist);
 
