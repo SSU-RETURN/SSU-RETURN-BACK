@@ -27,7 +27,7 @@ public class MemberPlaylistConverter {
 
     public MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO toMemberPlaylistMusics(MemberPlaylist memberPlaylist){
         Long memberPlaylistId = memberPlaylist.getMemberPlaylistId();
-        List<MemberPlaylistMusic> memberPlaylistMusicList = memberPlaylistMusicRepository.findByMemberPlaylistId(memberPlaylistId);
+        List<MemberPlaylistMusic> memberPlaylistMusicList = memberPlaylistMusicRepository.findByMemberPlaylistMemberPlaylistId(memberPlaylistId);
         List<Music> memberPlaylistMusics = new ArrayList<>();
         for(MemberPlaylistMusic memberPlaylistMusic : memberPlaylistMusicList){
             Long musicId = memberPlaylistMusic.getId();
@@ -47,7 +47,7 @@ public class MemberPlaylistConverter {
         }
         List<MemberPlaylistMusic> memberPlaylistMusicList = new ArrayList<>();
         for (Long id : memberPlaylistId) {
-            memberPlaylistMusicList.addAll(memberPlaylistMusicRepository.findByMemberPlaylistId(id));
+            memberPlaylistMusicList.addAll(memberPlaylistMusicRepository.findByMemberPlaylistMemberPlaylistId(id));
         }
         List<Music> memberPlaylistMusics = new ArrayList<>();
         for(MemberPlaylistMusic memberPlaylistMusic : memberPlaylistMusicList){
