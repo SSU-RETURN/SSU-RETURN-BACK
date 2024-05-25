@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface AIPlaylistMusicRepository extends JpaRepository<AIPlaylistMusic, Long> {
-    List<AIPlaylistMusic> findByAiPlaylistAiPlaylistId(Long aiPlaylistId);
+    List<AIPlaylistMusic> findByAiPlaylist(AIPlaylist aiPlaylist);
 }

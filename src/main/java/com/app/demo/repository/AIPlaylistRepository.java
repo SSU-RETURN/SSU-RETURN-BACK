@@ -12,5 +12,5 @@ import java.util.Optional;
 
 @Repository
 public interface AIPlaylistRepository extends JpaRepository<AIPlaylist, Long> {
-    AIPlaylist findByDiary(Optional<Diary> diary);
+    AIPlaylist findByDiary(Diary diary);
 }
