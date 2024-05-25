@@ -24,6 +24,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @Transactional(readOnly = true)
@@ -92,32 +94,39 @@ public class ChatGPTServiceImpl implements ChatGPTService {
     @Override
     public List<MusicRequestDTO.MusicContentDTO> parseResponse(String jsonResponse) {
         List<MusicRequestDTO.MusicContentDTO> musicList = new ArrayList<>();
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<List<String>> dataList = objectMapper.readValue(jsonResponse, new TypeReference<>() {
-            });
+        List<List<String>> parsedData = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\\{(.*?)\\}");
+        Matcher matcher = pattern.matcher(jsonResponse);
 
-            for (List<String> item : dataList) {
-                String artist = item.get(0);
-                String title = item.get(1);
-                String searchQuery = title + "/" + artist;
-
-                // 음악 검색
-                List<MusicResponseDTO.MusicSearchContentDTO> searchResults = musicService.searchMusic(searchQuery, 0);
-                if (!searchResults.isEmpty()) {
-                    // 첫 번째 음악 선택
-                    MusicResponseDTO.MusicSearchContentDTO firstResult = searchResults.get(0);
-                    MusicRequestDTO.MusicContentDTO musicContentDTO = MusicConverter.searchContentDTOToMusicContentDTO(firstResult);
-                    musicList.add(musicContentDTO);
-                } else {
-                    // 없으면 pictureKey = null 처리
-                    MusicResponseDTO.MusicSearchContentDTO firstResult = new MusicResponseDTO.MusicSearchContentDTO(title, artist, "NO_IMAGE");
-                    MusicRequestDTO.MusicContentDTO musicContentDTO = MusicConverter.searchContentDTOToMusicContentDTO(firstResult);
-                    musicList.add(musicContentDTO);
-                }
+        while (matcher.find()) {
+            String matchedGroup = matcher.group(1);
+            // 각 항목 내의 쉼표로 구분된 값들을 추출하여 리스트로 변환
+            String[] items = matchedGroup.split(",\\s*'");
+            List<String> dataList = new ArrayList<>();
+            for (String item : items) {
+                dataList.add(item.replace("'", "").trim());  // 작은따옴표 제거
             }
-        } catch (IOException e) {
-            log.error("Error parsing JSON response: " + e.getMessage());
+            parsedData.add(dataList);
+        }
+
+        for (List<String> item : parsedData) {
+            String artist = item.get(0);
+            String title = item.get(1);
+            String searchQuery = title + "/" + artist;
+
+            // 음악 검색
+            List<MusicResponseDTO.MusicSearchContentDTO> searchResults = musicService.searchMusic(searchQuery, 0);
+            if (!searchResults.isEmpty()) {
+                // 첫 번째 음악 선택
+                MusicResponseDTO.MusicSearchContentDTO firstResult = searchResults.get(0);
+                MusicRequestDTO.MusicContentDTO musicContentDTO = MusicConverter.searchContentDTOToMusicContentDTO(firstResult);
+                musicList.add(musicContentDTO);
+            } else {
+                // 없으면 pictureKey = null 처리
+                MusicResponseDTO.MusicSearchContentDTO firstResult = new MusicResponseDTO.MusicSearchContentDTO(title, artist, "NO_IMAGE");
+                MusicRequestDTO.MusicContentDTO musicContentDTO = MusicConverter.searchContentDTOToMusicContentDTO(firstResult);
+                musicList.add(musicContentDTO);
+            }
         }
         return musicList;
     }
