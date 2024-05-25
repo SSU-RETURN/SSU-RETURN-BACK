@@ -27,17 +27,18 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
     private final MemberRepository memberRepository;
     private final MemberPreferenceRepository memberPreferenceRepository;
     private final MemberPreferencePlaylistMusicRepository memberPreferencePlaylistMusicRepository;
-    private ChatGPTService chatGPTService;
+    private final ChatGPTService chatGPTService;
 
 
     public MemberPreferencePlaylistServiceImpl(MemberPreferencePlaylistRepository memberPreferencePlaylistRepository,
                                                MemberRepository memberRepository,
                                                MemberPreferenceRepository memberPreferenceRepository,
-                                               MemberPreferencePlaylistMusicRepository memberPreferencePlaylistMusicRepository){
+                                               MemberPreferencePlaylistMusicRepository memberPreferencePlaylistMusicRepository, ChatGPTService chatGPTService){
         this.memberRepository = memberRepository;
         this.memberPreferencePlaylistRepository = memberPreferencePlaylistRepository;
         this.memberPreferenceRepository = memberPreferenceRepository;
         this.memberPreferencePlaylistMusicRepository = memberPreferencePlaylistMusicRepository;
+        this.chatGPTService = chatGPTService;
     }
 
 
