@@ -16,12 +16,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.app.demo.converter.MemberPlaylistConverter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/playlist")
@@ -38,29 +40,32 @@ public class MemberPlaylistController {
         this.memberPlaylistMusicRepository=memberPlaylistMusicRepository;
     }
 
-/*
+
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Member 날짜음악조회", description = "Member플리 날짜로 검색하여 음악 조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @GetMapping("/date/{playlistDate}")
-    public BaseResponse<MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO> getMemberPlaylistMusicsByDate(@RequestParam(name="memberId") Long memberId, @PathVariable LocalDate playlistDate){
-        List<MemberPlaylist> memberPlaylist = memberPlaylistService.getMemberPlaylistByDate(memberId, playlistDate);
-        MemberPlaylistConverter memberPlaylistConverter = new MemberPlaylistConverter(musicRepository, memberPlaylistMusicRepository);
-        MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO memberPlaylistMusicsDTO = memberPlaylistConverter.toMemberPlaylistMusics(memberPlaylist);
-        return BaseResponse.onSuccess(memberPlaylistMusicsDTO);
+    public BaseResponse<List<MemberPlaylistResponseDTO.MusicResponseDTO>> getMemberPlaylistMusicsByDate(@RequestParam(name="memberId") Long memberId,
+                                                                                                        @PathVariable String playlistDate,
+                                                                                                        @RequestParam(defaultValue = "0") int page){
+        LocalDate date = LocalDate.parse(playlistDate);
+        Page<MemberPlaylistResponseDTO.MusicResponseDTO> musicPage = memberPlaylistService.getMemberPlaylistByDate(memberId, date, page);
+        return BaseResponse.onSuccess(musicPage.getContent());
     }
 
- */
 
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "Member 감정음악조회", description = "Member플리 감정으로 검색하여 음악 조회 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
     @GetMapping("/emotion/{memberEmotion}")
-    public BaseResponse<MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO> getMemberPlaylistMusicsByEmotion(@RequestParam(name="memberId") Long memberId, @PathVariable Emotion memberEmotion){
-        List<MemberPlaylist> memberPlaylistList = memberPlaylistService.getMemberPlaylistListByEmotion(memberId, memberEmotion);
-        MemberPlaylistConverter memberPlaylistConverter = new MemberPlaylistConverter(musicRepository, memberPlaylistMusicRepository);
-        MemberPlaylistResponseDTO.MemberPlaylistMusicsDTO memberPlaylistMusicsDTO = memberPlaylistConverter.toMemberPlaylistListMusics(memberPlaylistList);
-        return BaseResponse.onSuccess(memberPlaylistMusicsDTO);
+    public BaseResponse<List<MemberPlaylistResponseDTO.MusicResponseDTO>> getMemberPlaylistMusicsByEmotion(@RequestParam(name="memberId") Long memberId,
+                                                                                                           @PathVariable Emotion memberEmotion,
+                                                                                                           @RequestParam(defaultValue = "0") int page){
+        List<Music> musicList = memberPlaylistService.getMemberPlaylistListByEmotion(memberId, memberEmotion, page);
+        List<MemberPlaylistResponseDTO.MusicResponseDTO> responseDTOList = musicList.stream()
+                .map(music -> new MemberPlaylistResponseDTO.MusicResponseDTO(music.getId(), music.getTitle(), music.getArtist(), music.getPictureKey()))
+                .collect(Collectors.toList());
+        return BaseResponse.onSuccess(responseDTOList);
     }
 
 

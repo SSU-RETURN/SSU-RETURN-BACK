@@ -42,4 +42,15 @@ public class MemberPlaylistResponseDTO {
         private Long diaryId;
         private Diary diary;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class MusicResponseDTO{
+        private Long id;
+        private String title;
+        private String artist;
+        private String pictureKey;
+    }
 }
