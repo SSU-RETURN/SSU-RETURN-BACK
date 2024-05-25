@@ -29,8 +29,9 @@ public class MemberPlaylist {
     @Column(name = "diary_id")
     private Long diaryId;
 
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_emotion")

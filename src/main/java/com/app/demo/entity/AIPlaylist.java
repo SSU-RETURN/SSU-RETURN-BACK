@@ -1,12 +1,9 @@
 package com.app.demo.entity;
 
-import com.app.demo.entity.enums.Emotion;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Builder
@@ -23,18 +20,13 @@ public class AIPlaylist {
     @Column(name = "ai_Playlist_id")
     private Long aiPlaylistId;
 
-    @Column(name = "member_id")
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "diary")
+    @JoinColumn(name = "diary_id")
     private Diary diary;
-
-    @Column(name = "diary_id")
-    private Long diaryId;
-
-    @Column(name = "ai_emotion")
-    private List<Float> aiEmotion;
 
     @Column(name = "playlist_date")
     private LocalDate playlistDate;
