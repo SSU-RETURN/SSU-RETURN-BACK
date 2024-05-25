@@ -17,7 +17,7 @@ import lombok.*;
 public class MemberPlaylistMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_playlist_music_id")
+    @Column(name = "ai_mappingtable_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -40,12 +40,12 @@ public class MemberPlaylistServiceImpl implements MemberPlaylistService {
 
     @Override
     public List<MemberPlaylist> getMemberPlaylistListByEmotion(Long memberId, Emotion memberEmotion) {
-        return memberPlaylistRepository.findByMemberIdAndMemberEmotion(memberId, memberEmotion);
+        return memberPlaylistRepository.findByMemberMemberIdAndMemberEmotion(memberId, memberEmotion);
     }
 
     @Override
     public List<MemberPlaylist> getMemberPlaylistListByMemberId(Long memberId) {
-        return memberPlaylistRepository.findByMemberId(memberId);
+        return memberPlaylistRepository.findByMemberMemberId(memberId);
     }
 
     @Override
