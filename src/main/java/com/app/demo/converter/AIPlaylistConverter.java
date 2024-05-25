@@ -23,6 +23,7 @@ public class AIPlaylistConverter {
         this.musicRepository = musicRepository;
     }
 
+    /*
     public AIPlaylistResponseDTO.AIPlaylistMusicsDTO toAIPlaylistMusics(AIPlaylist aiPlaylist){
         Long aiPlaylistId = aiPlaylist.getAiPlaylistId();
         List<AIPlaylistMusic> aiPlaylistMusicList = aiPlaylistMusicRepository.findByAiPlaylistAiPlaylistId(aiPlaylistId);
@@ -35,6 +36,8 @@ public class AIPlaylistConverter {
                 .aiPlaylistMusics(aiPlaylistMusics)
                 .build();
     }
+
+     */
 /*
     public AIPlaylistResponseDTO.TestDTO toAITest(AIPlaylist aiPlaylist){
         return AIPlaylistResponseDTO.TestDTO.builder()
