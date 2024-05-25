@@ -15,8 +15,7 @@ public class DiaryRequestDTO{
     public static class CreateDiaryRequestDTO {
         private Long memberId;
         private String content;
-        private Emotion memberEmotion;
-        private MultipartFile pictureKey;
+        private String memberEmotion;
         private LocalDate writtenDate;
         private List<Long> musicList;
     }
