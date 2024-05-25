@@ -1,5 +1,8 @@
 package com.app.demo.service.impl;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.dto.response.DiaryResponseDTO;
 import com.app.demo.entity.*;
@@ -12,10 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Transactional
@@ -32,6 +38,11 @@ public class DiaryServiceImpl implements DiaryService {
     private MemberPreferenceService memberPreferenceService;
     private MemberPlaylistService memberPlaylistService;
     private MemberPlaylistMusicService memberPlaylistMusicService;
+
+    @Autowired
+    private AmazonS3 s3Client;
+
+    private final String bucketName = System.getenv("BUCKET_NAME");
 
     @Autowired
     public DiaryServiceImpl(DiaryRepository diaryRepository, MemberRepository memberRepository,
@@ -64,14 +75,17 @@ public class DiaryServiceImpl implements DiaryService {
         MemberPlaylist memberPlaylist = memberPlaylistService.createMemberPlaylist(member, requestDTO.getMemberEmotion(), requestDTO.getWrittenDate());
         memberPlaylistMusicService.setMemberPlaylistMusic(musics, memberPlaylist);
         //s3 저장
-
+        String imageUrl = "";
+        if (requestDTO.getPictureKey() != null && !requestDTO.getPictureKey().isEmpty()) {
+            imageUrl = uploadFileToS3(requestDTO.getPictureKey());
+        }
 
         //다이어리 저장
         Diary diary = Diary.builder()
                 .content(requestDTO.getContent())
                 .memberEmotion(requestDTO.getMemberEmotion())
                 .aiEmotion(aiEmotion)
-                .pictureKey(requestDTO.getPictureKey())
+                .pictureKey(imageUrl)
                 .writtenDate(requestDTO.getWrittenDate())
                 .aiPlaylist(aiPlaylist)
                 .memberPlaylist(memberPlaylist)
@@ -85,9 +99,19 @@ public class DiaryServiceImpl implements DiaryService {
 
     }
 
-    private List<Float> extractAiEmotion(String content) {
-        List<Float> aiEmotion = new ArrayList<>();
-        return aiEmotion;
+    private String uploadFileToS3(MultipartFile file) {
+        String fileName = generateFileName(file);
+        try {
+            s3Client.putObject(new PutObjectRequest(bucketName, fileName, file.getInputStream(), null)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            return s3Client.getUrl(bucketName, fileName).toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Error in storing file to S3", e);
+        }
+    }
+
+    private String generateFileName(MultipartFile file) {
+        return new Date().getTime() + "-" + file.getOriginalFilename().replace(" ", "_");
     }
 
     @Override

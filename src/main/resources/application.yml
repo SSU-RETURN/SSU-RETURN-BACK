@@ -71,3 +71,13 @@ server:
       charset: UTF-8
       force: true
       enabled: true
+
+cloud:
+  aws:
+    s3:
+      bucket: ${BUCKET_NAME}
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: ${BUCKET_ACCESS}
+      secretKey: ${BUCKET_SECRET}
