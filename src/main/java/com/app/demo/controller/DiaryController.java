@@ -123,4 +123,14 @@ public class DiaryController {
         DiaryResponseDTO.DiaryContentDTO responseDTO = DiaryConverter.toDiaryContentDTO(diary);
         return BaseResponse.onSuccess(responseDTO);
     }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "일기 감정 분석 결과 조회", description = "일기감정 분석결과 조회 API입니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
+    @GetMapping("/emotion/{diaryId}")
+    public BaseResponse<DiaryResponseDTO.EmotionDTO> getEmotionFromDiary(@PathVariable Long diaryId){
+        AiEmotion aiEmotion = diaryService.getAiEmotionFromDiary(diaryId);
+        DiaryResponseDTO.EmotionDTO responseDTO = DiaryConverter.diaryAiEmotion(aiEmotion);
+        return BaseResponse.onSuccess(responseDTO);
+    }
 }

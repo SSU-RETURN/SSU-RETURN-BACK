@@ -2,6 +2,7 @@ package com.app.demo.service;
 
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.dto.response.DiaryResponseDTO;
+import com.app.demo.entity.AiEmotion;
 import com.app.demo.entity.Diary;
 import com.app.demo.entity.Member;
 
@@ -14,4 +15,5 @@ public interface DiaryService {
     void deleteDiary(Long diaryId);
     List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth);
     Diary getDiary(Long diaryId);
+    AiEmotion getAiEmotionFromDiary(Long diaryId);
 }

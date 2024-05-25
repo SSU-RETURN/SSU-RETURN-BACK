@@ -1,6 +1,7 @@
 package com.app.demo.dto.response;
 
 import com.app.demo.dto.request.DiaryRequestDTO;
+import com.app.demo.entity.AiEmotion;
 import com.app.demo.entity.Member;
 import com.app.demo.entity.enums.Emotion;
 import lombok.AllArgsConstructor;
@@ -47,5 +48,17 @@ public class DiaryResponseDTO {
     public static class DiaryIdDTO{
         private Long id;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class EmotionDTO{
+        private Integer sad;
+        private Integer happy;
+        private Integer angry;
+        private Integer surprise;
+    }
+
 
 }

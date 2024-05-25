@@ -143,6 +143,13 @@ public class DiaryServiceImpl implements DiaryService {
     public Diary getDiary(Long diaryId) {
         return diaryRepository.findByDiaryId(diaryId);
     }
+
+    @Override
+    public AiEmotion getAiEmotionFromDiary(Long diaryId) {
+        Diary diary = diaryRepository.findByDiaryId(diaryId);
+        AiEmotion aiEmotion = diary.getAiEmotion();
+        return aiEmotion;
+    }
 }
 
 

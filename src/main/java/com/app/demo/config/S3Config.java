@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class S3Config {
-    @Value("${BUCKET_ACESS}")
+    @Value("${BUCKET_ACCESS}")
     private String accessKey;
 
     @Value("${BUCKET_SECRET}")
