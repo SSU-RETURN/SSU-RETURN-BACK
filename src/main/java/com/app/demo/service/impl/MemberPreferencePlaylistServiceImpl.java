@@ -61,22 +61,28 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
         return memberPreferencePlaylistRepository.save(memberPreferencePlaylist);
     }
 
+    @Transactional
     @Override
-    public Boolean updateMemberPreferencePlaylist(MemberPreferencePlaylistRequestDTO.UpdateMemberPreferencePlaylistDTO requestDTO){
+    public Boolean updateMemberPreferencePlaylist(MemberPreferencePlaylistRequestDTO.UpdateMemberPreferencePlaylistDTO requestDTO) {
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
+
         MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistRepository.findByMember(member);
-        if(memberPreferencePlaylist.getLastUpdateDate().isEqual(requestDTO.getDate())){
+
+        if (memberPreferencePlaylist.getLastUpdateDate().isEqual(requestDTO.getDate())) {
             return Boolean.FALSE;
-        }else{
+        } else {
             MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
+
             memberPreferencePlaylistMusicRepository.deleteAllByMemberPreferencePlaylist(memberPreferencePlaylist);
             List<Music> musics = getPreferenceMusicIdsByAi(memberPreference);
-            for(Music music : musics){
+            for (Music music : musics) {
                 memberPreferencePlaylistMusicRepository.save(MemberPreferencePlaylistMusic.builder()
                         .memberPreferencePlaylist(memberPreferencePlaylist)
                         .music(music)
                         .build());
             }
+            memberPreferencePlaylist.setLastUpdateDate(LocalDate.now()); // Update the last update date
+            memberPreferencePlaylistRepository.save(memberPreferencePlaylist); // Save the updated playlist
             return Boolean.TRUE;
         }
     }
