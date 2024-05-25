@@ -34,6 +34,9 @@ public class MemberPlaylist {
     @Column(name = "member_emotion")
     private Emotion memberEmotion;
 
+    @Column(name = "playlist_date")
+    private LocalDate playlistDate;
+
 }
 
 

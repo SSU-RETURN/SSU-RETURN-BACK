@@ -56,12 +56,12 @@ public class DiaryServiceImpl implements DiaryService {
         String genre = String.join(String.valueOf(memberPreference.getGenreFirst()),",",String.valueOf(memberPreference.getGenreSecond()));
         List<Music> musicList= chatGPTService.processMusicRecommendations(String.valueOf(requestDTO.getMemberEmotion()), preference, genre);
         //aiPlaylist 저장
-        AIPlaylist aiPlaylist = aiPlaylistService.createAiPlaylist(member.getMemberId());
+        AIPlaylist aiPlaylist = aiPlaylistService.createAiPlaylist(member.getMemberId(), requestDTO.getWrittenDate());
         aiPlaylistMusicService.setAiPlaylistMusic(musicList, aiPlaylist);
         //memberMusic 변환
         List<Music> musics= musicRepository.findByIdIn(MembermusicList);
         //memberPlaylist 저장
-        MemberPlaylist memberPlaylist = memberPlaylistService.createMemberPlaylist(member, requestDTO.getMemberEmotion());
+        MemberPlaylist memberPlaylist = memberPlaylistService.createMemberPlaylist(member, requestDTO.getMemberEmotion(), requestDTO.getWrittenDate());
         memberPlaylistMusicService.setMemberPlaylistMusic(musics, memberPlaylist);
         //s3 저장
 
@@ -79,9 +79,7 @@ public class DiaryServiceImpl implements DiaryService {
 
         diaryRepository.save(diary);
         aiPlaylist.setDiary(diary);
-        aiPlaylist.setPlaylistDate(diary.getWrittenDate());
-        memberPlaylistRepository.save(memberPlaylist);
-        aiPlaylistRepository.save(aiPlaylist);
+        memberPlaylist.setDiary(diary);
 
         return diary;
 

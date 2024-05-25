@@ -32,8 +32,11 @@ public class MemberPlaylistServiceImpl implements MemberPlaylistService {
 
     @Override
     public MemberPlaylist getMemberPlaylistByDate(Long memberId, LocalDate playlistDate) {
-        return memberPlaylistRepository.findByMemberIdAndPlaylistDate(memberId, playlistDate);
+        //return memberPlaylistRepository.findByMemberMemberIdAndPlaylistDate(memberId, playlistDate);
+        return null;
     }
+
+
 
     @Override
     public List<MemberPlaylist> getMemberPlaylistListByEmotion(Long memberId, Emotion memberEmotion) {
@@ -46,10 +49,11 @@ public class MemberPlaylistServiceImpl implements MemberPlaylistService {
     }
 
     @Override
-    public MemberPlaylist createMemberPlaylist(Member member, Emotion emotion) {
+    public MemberPlaylist createMemberPlaylist(Member member, Emotion emotion, LocalDate date) {
         MemberPlaylist playlist = MemberPlaylist.builder()
                 .member(member)
                 .memberEmotion(emotion)
+                .playlistDate(date)
                 .build();
         memberPlaylistRepository.save(playlist);
         return playlist;

@@ -11,6 +11,7 @@ import com.app.demo.service.AIPlaylistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -33,9 +34,12 @@ public class AIPlaylistServiceImpl implements AIPlaylistService {
 
 
     @Override
-    public AIPlaylist createAiPlaylist(Long memberId) {
+    public AIPlaylist createAiPlaylist(Long memberId, LocalDate date) {
         Member member = memberRepository.findByMemberId(memberId);
-        AIPlaylist aiPlaylist = AIPlaylist.builder().member(member).build();
+        AIPlaylist aiPlaylist = AIPlaylist.builder()
+                .member(member)
+                .playlistDate(date)
+                .build();
         aiPlaylistRepository.save(aiPlaylist);
         return aiPlaylist;
     }

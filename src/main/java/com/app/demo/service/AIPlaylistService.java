@@ -4,9 +4,10 @@ import com.app.demo.entity.AIPlaylist;
 import com.app.demo.entity.Diary;
 import com.app.demo.entity.Member;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface AIPlaylistService {
-    AIPlaylist createAiPlaylist(Long memberId);
+    AIPlaylist createAiPlaylist(Long memberId, LocalDate date);
     AIPlaylist getAiPlaylist(Long diaryId);
 }
