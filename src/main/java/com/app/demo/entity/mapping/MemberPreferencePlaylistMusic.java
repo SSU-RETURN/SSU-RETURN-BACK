@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "preference_playlist_music")
 
