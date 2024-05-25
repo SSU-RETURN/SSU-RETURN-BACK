@@ -1,6 +1,7 @@
 package com.app.demo.entity;
 
 
+import com.app.demo.entity.enums.Genre;
 import com.app.demo.entity.enums.Preference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,9 +32,6 @@ public class Member {
 
     @Column(nullable = false)
     private String nickname;
-
-    @Enumerated(EnumType.STRING)
-    private Preference preference;
 
     @ColumnDefault("1")  //삭제시 0
     private int isDelete;

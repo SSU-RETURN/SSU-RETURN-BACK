@@ -19,12 +19,11 @@ public class MemberPreferencePlaylistMusic {
     @Column(name = "preference_playlist_music_id")
     private Long id;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "preference_playlist_id")
     private MemberPreferencePlaylist memberPreferencePlaylist;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "music_id")
     private Music music;
 
