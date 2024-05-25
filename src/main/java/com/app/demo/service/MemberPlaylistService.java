@@ -12,5 +12,5 @@ public interface MemberPlaylistService {
     MemberPlaylist getMemberPlaylistByDate(Long memberId, LocalDate playlistDate);
     List<MemberPlaylist> getMemberPlaylistListByEmotion(Long memberId, Emotion memberEmotion);
     List<MemberPlaylist> getMemberPlaylistListByMemberId(Long memberId);
-    MemberPlaylist createMemberPlaylist(Member member);
+    MemberPlaylist createMemberPlaylist(Member member, Emotion emotion);
 }

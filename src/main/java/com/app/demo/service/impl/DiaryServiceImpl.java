@@ -30,6 +30,8 @@ public class DiaryServiceImpl implements DiaryService {
     private AiPlaylistMusicService aiPlaylistMusicService;
     private ChatGPTService chatGPTService;
     private MemberPreferenceService memberPreferenceService;
+    private MemberPlaylistService memberPlaylistService;
+    private MemberPlaylistMusicService memberPlaylistMusicService;
 
     @Autowired
     public DiaryServiceImpl(DiaryRepository diaryRepository, MemberRepository memberRepository,
@@ -58,13 +60,13 @@ public class DiaryServiceImpl implements DiaryService {
         aiPlaylistMusicService.setAiPlaylistMusic(musicList, aiPlaylist);
         //memberMusic 변환
         List<Music> musics= musicRepository.findByIdIn(MembermusicList);
+        //memberPlaylist 저장
+        MemberPlaylist memberPlaylist = memberPlaylistService.createMemberPlaylist(member, requestDTO.getMemberEmotion());
+        memberPlaylistMusicService.setMemberPlaylistMusic(musics, memberPlaylist);
+        //s3 저장
 
 
-        MemberPlaylist memberPlaylist = MemberPlaylist.builder()
-                .member(member)
-                .memberEmotion(requestDTO.getMemberEmotion())
-                .build();
-
+        //다이어리 저장
         Diary diary = Diary.builder()
                 .content(requestDTO.getContent())
                 .memberEmotion(requestDTO.getMemberEmotion())
@@ -76,9 +78,6 @@ public class DiaryServiceImpl implements DiaryService {
                 .build();
 
         diaryRepository.save(diary);
-        memberPlaylist.setDiary(diary);
-        memberPlaylist.setPlaylistDate(diary.getWrittenDate());
-        memberPlaylist.setDiaryId(diary.getDiaryId());
         aiPlaylist.setDiary(diary);
         aiPlaylist.setPlaylistDate(diary.getWrittenDate());
         memberPlaylistRepository.save(memberPlaylist);

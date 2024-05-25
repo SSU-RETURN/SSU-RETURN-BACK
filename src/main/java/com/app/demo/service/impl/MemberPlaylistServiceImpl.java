@@ -46,8 +46,11 @@ public class MemberPlaylistServiceImpl implements MemberPlaylistService {
     }
 
     @Override
-    public MemberPlaylist createMemberPlaylist(Member member) {
-        MemberPlaylist playlist = MemberPlaylist.builder().member(member).build();
+    public MemberPlaylist createMemberPlaylist(Member member, Emotion emotion) {
+        MemberPlaylist playlist = MemberPlaylist.builder()
+                .member(member)
+                .memberEmotion(emotion)
+                .build();
         memberPlaylistRepository.save(playlist);
         return playlist;
     }

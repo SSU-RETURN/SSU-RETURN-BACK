@@ -24,13 +24,6 @@ public class MemberPlaylistMusic {
     @JoinColumn(name = "member_playlist")
     private MemberPlaylist memberPlaylist;
 
-    @Column(name = "member_playlist_id")
-    private Long memberPlaylistId;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "music_id")
     private Music music;

@@ -30,7 +30,7 @@ public class AIPlaylistServiceImpl implements AIPlaylistService {
         Optional<Diary> diary = diaryRepository.findById(diaryId);
         return aiPlaylistRepository.findByDiary(diary);
     }
-    
+
 
     @Override
     public AIPlaylist createAiPlaylist(Long memberId) {
