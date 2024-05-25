@@ -10,13 +10,19 @@ import com.app.demo.entity.Member;
 import com.app.demo.service.AIPlaylistService;
 import com.app.demo.service.AiEmotionService;
 import com.app.demo.service.DiaryService;
+import com.app.demo.service.S3ImageService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Encoding;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,10 +35,14 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @Autowired
-    private AiEmotionService aiEmotionService;
-    private AIPlaylistService aiPlaylistService;
-    public DiaryController(DiaryService diaryService) {
+    private final AiEmotionService aiEmotionService;
+    private final AIPlaylistService aiPlaylistService;
+    private final S3ImageService s3ImageService;
+    public DiaryController(DiaryService diaryService, AiEmotionService aiEmotionService, AIPlaylistService aiPlaylistService, S3ImageService s3ImageService) {
         this.diaryService = diaryService;
+        this.aiEmotionService = aiEmotionService;
+        this.aiPlaylistService = aiPlaylistService;
+        this.s3ImageService = s3ImageService;
     }
 
 
@@ -75,10 +85,11 @@ public class DiaryController {
     @ResponseStatus(code = HttpStatus.CREATED)
     @Operation(summary = "일기생성", description = "일기생성 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON201", description="등록성공")})
-    @PostMapping("/create")
-    public BaseResponse<DiaryResponseDTO.DiaryIdDTO> createDiary(@RequestBody DiaryRequestDTO.CreateDiaryRequestDTO requestDTO) {
-        Diary diary = diaryService.createDiary(requestDTO);
-        aiPlaylistService.createAiPlaylist(requestDTO.getMemberId(), requestDTO.getWrittenDate());
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public BaseResponse<DiaryResponseDTO.DiaryIdDTO> createDiary(@RequestPart("diary") DiaryRequestDTO.CreateDiaryRequestDTO requestDTO,
+                                                                 @RequestPart(value = "image", required = false) MultipartFile image) {
+        String imageUrl = (image != null) ? s3ImageService.upload(image) : null;
+        Diary diary = diaryService.createDiary(requestDTO, imageUrl);
         DiaryResponseDTO.DiaryIdDTO responseDTO = DiaryConverter.toDiaryIdDTO(diary);
         return BaseResponse.onSuccess(responseDTO);
     }
