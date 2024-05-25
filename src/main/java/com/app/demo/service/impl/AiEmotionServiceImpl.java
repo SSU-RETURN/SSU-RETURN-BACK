@@ -16,7 +16,11 @@ import java.util.Map;
 @Service
 public class AiEmotionServiceImpl implements AiEmotionService {
 
-    AiEmotionRepository aiEmotionRepository;
+    private final AiEmotionRepository aiEmotionRepository;
+
+    public AiEmotionServiceImpl(AiEmotionRepository aiEmotionRepository) {
+        this.aiEmotionRepository = aiEmotionRepository;
+    }
 
 
     @Override
