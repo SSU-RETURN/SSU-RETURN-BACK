@@ -8,6 +8,9 @@ import java.util.List;
 public interface ChatGPTService {
     public List<Music> processMusicRecommendations(String tagString, String tagStringEmotion, String preferString);
     public String createPrompt(String tagString, String tagStringEmotion, String preferString);
+    public List<Music> processMusicRecommendations(String preferString);
+    public String createPrompt(String preferString);
+
     public String chatGPT(String prompt);
     public String extractMessageFromJSONResponse(String response);
     public List<MusicRequestDTO.MusicContentDTO> parseResponse(String jsonResponse);

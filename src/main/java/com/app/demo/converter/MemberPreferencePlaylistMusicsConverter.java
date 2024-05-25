@@ -15,8 +15,4 @@ public class MemberPreferencePlaylistMusicsConverter {
     public MemberPreferencePlaylistMusicsConverter(MemberPreferencePlaylistMusicRepository memberPreferencePlaylistMusicRepository) {
         this.memberPreferencePlaylistMusicRepository = memberPreferencePlaylistMusicRepository;
     }
-
-    public List<Music> toMemberPreferencePlaylistMusics(MemberPreferencePlaylist memberPreferencePlaylist){
-        return memberPreferencePlaylistMusicRepository.findMusicByMemberPreferencePlaylist(memberPreferencePlaylist);
-    }
 }

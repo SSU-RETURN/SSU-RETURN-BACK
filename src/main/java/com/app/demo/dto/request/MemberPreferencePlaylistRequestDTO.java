@@ -10,12 +10,6 @@ public class MemberPreferencePlaylistRequestDTO {
 
     @Data
     @Builder
-    public static class CreateMemberPreferencePlaylistDTO{
-        Long memberId;
-    }
-
-    @Data
-    @Builder
     public static class UpdateMemberPreferencePlaylistDTO{
         Long memberId;
         LocalDate date;

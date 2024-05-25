@@ -12,5 +12,7 @@ import java.util.List;
 @Repository
 public interface MemberPreferencePlaylistMusicRepository extends JpaRepository<MemberPreferencePlaylistMusic, Long> {
     void deleteAllByMemberPreferencePlaylist(MemberPreferencePlaylist memberPreferencePlaylist);
-    List<Music> findMusicByMemberPreferencePlaylist(MemberPreferencePlaylist memberPreferencePlaylist);
+    List<MemberPreferencePlaylistMusic> findByMemberPreferencePlaylist(MemberPreferencePlaylist memberPreferencePlaylist);
+
+
 }

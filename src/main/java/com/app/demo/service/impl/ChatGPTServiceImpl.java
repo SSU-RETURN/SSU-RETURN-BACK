@@ -50,9 +50,26 @@ public class ChatGPTServiceImpl implements ChatGPTService {
         prompt = String.format(
                 "제가 '%s' 감정을 느끼고 있을 때 들으면 좋은 노래가 있을까요? 저는 그 감정을 느낄 때 평소에 '%s'한 음악을 즐겨 듣습니다. '%s'의 음악을 즐깁니다. '%s' 보다는 '%s'를 조금 더 중점으로 하여 좋은 음악 5개 추천 부탁드립니다. 되도록 한국 음악으로 추천해주세요. 노래는 아래의 형식으로 추천해주세요 (노래 하나의 정보는 { } 묶습니다. 줄바꿈 없이) : [{'가수명', '노래제목'},{'가수명', '노래제목'}, ... ,{'가수명', '노래제목'},{'가수명', '노래제목'}]",
                 tagString, tagStringEmotion, preferString, preferString, tagString);
-
         return prompt;
     }
+
+    @Override
+    public List<Music> processMusicRecommendations(String preferString) {
+        String prompt = createPrompt(preferString);
+        String response = chatGPT(prompt);
+        List<MusicRequestDTO.MusicContentDTO> searchMusicDTOs = parseResponse(response);
+
+        MusicRequestDTO.SaveMusicDTO saveMusicDTO = MusicConverter.toSaveMusicDTO(searchMusicDTOs);
+        return musicService.saveMusic(saveMusicDTO);
+    }
+
+    @Override
+    public String createPrompt(String preferString) {
+        return String.format(
+                "저는 '%s'장르의 음악을 즐깁니다. 첫번째 장르의 음악 5개, 두번째 장르의 음악 3개, 세번째 장르의 음악 1개 추천 부탁드립니다. 되도록 한국 음악으로 추천해주세요. 노래는 아래의 형식으로 추천해주세요 (노래 하나의 정보는 { } 묶습니다. 줄바꿈 없이) : [{'가수명', '노래제목'},{'가수명', '노래제목'}, ... ,{'가수명', '노래제목'},{'가수명', '노래제목'}]",
+                preferString);
+    }
+
 
     @Override
     public String chatGPT(String prompt) {

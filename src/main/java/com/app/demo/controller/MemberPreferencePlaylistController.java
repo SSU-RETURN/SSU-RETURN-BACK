@@ -40,8 +40,8 @@ public class MemberPreferencePlaylistController {
     @Operation(summary = "취향플리생성", description = "취향플리생성 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON201", description="등록성공")})
     @PostMapping("/preference/create")
-    public BaseResponse<MemberPreferencePlaylistResponseDTO.CreateMemberPreferencePlaylistDTO> createMemberPreferencePlaylist(@RequestBody MemberPreferencePlaylistRequestDTO.CreateMemberPreferencePlaylistDTO requestDTO){
-        MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistService.createMemberPreferencePlaylist(requestDTO);
+    public BaseResponse<MemberPreferencePlaylistResponseDTO.CreateMemberPreferencePlaylistDTO> createMemberPreferencePlaylist(@RequestParam Long memberId){
+        MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistService.createMemberPreferencePlaylist(memberId);
         MemberPreferencePlaylistResponseDTO.CreateMemberPreferencePlaylistDTO responseDTO = MemberPreferencePlaylistConverter.toCreateDTO(memberPreferencePlaylist);
         return BaseResponse.onSuccess(responseDTO);
     }
@@ -65,8 +65,7 @@ public class MemberPreferencePlaylistController {
     @ApiResponses({@ApiResponse(responseCode = "COMMON200", description="검색성공")})
     @GetMapping("/preference/musics/{memberId}")
     public BaseResponse<List<Music>> getMemberPreferencePlaylistMusics(@PathVariable Long memberId){
-        MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistService.getMemberPreferencePlaylistByMember(memberId);
-        List<Music> musics = memberPreferencePlaylistMusicRepository.findMusicByMemberPreferencePlaylist(memberPreferencePlaylist);
+        List<Music> musics  = memberPreferencePlaylistService.getMemberPreferencePlaylistByMember(memberId);
         return BaseResponse.onSuccess(musics);
     }
 
