@@ -50,4 +50,5 @@ public class AiEmotionServiceImpl implements AiEmotionService {
         }
         return null;
     }
+
 }
