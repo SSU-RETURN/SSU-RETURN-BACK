@@ -33,7 +33,6 @@ public class DiaryResponseDTO {
     public static class DiaryContentDTO {
         private Long id;
         private Emotion memberEmotion;
-        private List<Float> AIEmotion;
         private LocalDate writtenDate;
         private String content;
         private String pictureKey;

@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
-    List<Diary> findByMemberIdAndWrittenDateBetween(Long memberId, LocalDate startDate, LocalDate endDate);
+    List<Diary> findByMemberAndWrittenDateBetween(Member member, LocalDate startDate, LocalDate endDate);
     Diary findByDiaryId(Long diaryId);
-
+    Diary findByMemberAndWrittenDate(Member member, LocalDate date);
 
 }

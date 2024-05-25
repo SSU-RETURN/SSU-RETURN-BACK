@@ -20,11 +20,11 @@ public class MemberPlaylistMusic {
     @Column(name = "ai_mappingtable_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "member_playlist")
     private MemberPlaylist memberPlaylist;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "music_id")
     private Music music;
 }
