@@ -9,5 +9,6 @@ public enum Genre {
     JAZZ,
     CLASSIC,
     POP,
-    ROCK
+    ROCK,
+    COUNTRY
 }
