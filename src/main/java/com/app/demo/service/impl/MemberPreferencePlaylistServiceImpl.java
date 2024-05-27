@@ -1,6 +1,9 @@
 package com.app.demo.service.impl;
 
 
+import com.app.demo.apiPayload.code.status.ErrorStatus;
+import com.app.demo.apiPayload.exception.AuthException;
+import com.app.demo.apiPayload.exception.UserException;
 import com.app.demo.dto.request.MemberPreferencePlaylistRequestDTO;
 import com.app.demo.entity.Member;
 import com.app.demo.entity.MemberPreference;
@@ -51,6 +54,9 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
                 .lastUpdateDate(LocalDate.now())
                 .build();
         MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
+        if (memberPreference == null) {
+            throw new UserException(ErrorStatus.USER_PREFERENCE_NOT_FOUND);
+        }
         List<Music> musics = getPreferenceMusicIdsByAi(memberPreference);
         for(Music music : musics){
             memberPreferencePlaylistMusicRepository.save(MemberPreferencePlaylistMusic.builder()
