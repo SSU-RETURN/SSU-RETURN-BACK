@@ -1,4 +1,6 @@
 package com.app.demo.service.impl;
+import com.app.demo.apiPayload.code.status.ErrorStatus;
+import com.app.demo.apiPayload.exception.UserException;
 import com.app.demo.dto.request.MemberPreferenceRequestDTO;
 import com.app.demo.dto.response.MemberPreferenceResponseDTO;
 import com.app.demo.entity.Member;
@@ -20,6 +22,9 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
     @Override
     public MemberPreference createMemberPreference(MemberPreferenceRequestDTO.CreateMemberPreferenceRequestDTO requestDTO){
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
+        if(memberPreferenceRepository.findByMember(member) != null){
+            throw new UserException(ErrorStatus.USER_PREFERENCE_EXISTS);
+        }
         MemberPreference memberPreference = MemberPreference.builder()
                 .member(member)
                 .genreFirst(requestDTO.getGenreFirst())
