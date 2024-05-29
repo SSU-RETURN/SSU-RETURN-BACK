@@ -154,7 +154,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
     @Override
     public Diary getDiaryByMemberDate(Long memberId, LocalDate date){
-        Member member = memberRepository.findByMemberId(memberId)
+        Member member = memberRepository.findByMemberId(memberId);
         return diaryRepository.findByMemberAndWrittenDate(member, date);
     }
 }
