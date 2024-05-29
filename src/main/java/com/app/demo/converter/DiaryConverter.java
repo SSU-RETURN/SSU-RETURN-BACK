@@ -45,4 +45,9 @@ public class DiaryConverter {
                 .surprise(aiEmotion.getSurprise())
                 .build();
     }
+    public static DiaryResponseDTO.todayEmotionDTO toTodayEmotion(Diary diary){
+        return DiaryResponseDTO.todayEmotionDTO.builder()
+                .emotion(diary.getMemberEmotion())
+                .build();
+    }
 }

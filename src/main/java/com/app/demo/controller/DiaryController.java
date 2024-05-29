@@ -144,4 +144,17 @@ public class DiaryController {
         DiaryResponseDTO.EmotionDTO responseDTO = DiaryConverter.diaryAiEmotion(aiEmotion);
         return BaseResponse.onSuccess(responseDTO);
     }
+
+    @ResponseStatus(code = HttpStatus.OK)
+    @Operation(summary = "오늘의 일기의 감정 조회", description = "오늘의 일기의 감정을 조회합니다")
+    @ApiResponses({@ApiResponse(responseCode = "COMMON200", description = "조회성공")})
+    @GetMapping("/{memberId}/{date}")
+    public BaseResponse<DiaryResponseDTO.todayEmotionDTO> getTodayEmotion(@PathVariable Long memberId, @PathVariable LocalDate date){
+        Diary diary = diaryService.getDiaryByMemberDate(memberId, date);
+        if(diary == null){
+            return BaseResponse.onFailure("COMMON404", "오늘의 일기가 없습니다", null);
+        }
+        DiaryResponseDTO.todayEmotionDTO responseDTO = DiaryConverter.toTodayEmotion(diary);
+        return BaseResponse.onSuccess(responseDTO);
+    }
 }

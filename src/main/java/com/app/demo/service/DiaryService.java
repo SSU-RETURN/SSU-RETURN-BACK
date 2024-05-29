@@ -14,4 +14,5 @@ public interface DiaryService {
     List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth);
     Diary getDiary(Long diaryId);
     AiEmotion getAiEmotionFromDiary(Long diaryId);
+    Diary getDiaryByMemberDate(Long memberId, LocalDate date);
 }

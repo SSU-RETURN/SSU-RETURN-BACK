@@ -29,9 +29,6 @@ public class Diary {
     @JoinColumn(name = "member")
     private Member member;
 
-    @Column(name = "member_id")
-    private Long memberId;
-
     @Column(length = 500)
     private String content;
 

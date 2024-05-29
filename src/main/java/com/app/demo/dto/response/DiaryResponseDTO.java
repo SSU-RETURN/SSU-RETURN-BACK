@@ -59,5 +59,13 @@ public class DiaryResponseDTO {
         private Integer surprise;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class todayEmotionDTO{
+        private Emotion emotion;
+    }
+
 
 }
