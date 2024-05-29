@@ -1,5 +1,6 @@
 package com.app.demo.repository;
 
+import com.app.demo.entity.Diary;
 import com.app.demo.entity.MemberPlaylist;
 import com.app.demo.entity.enums.Emotion;
 import org.springframework.data.domain.Page;
@@ -16,4 +17,6 @@ public interface MemberPlaylistRepository extends JpaRepository<MemberPlaylist, 
     MemberPlaylist findByMemberMemberIdAndPlaylistDate(Long memberId, LocalDate playlistDate);
     Page<MemberPlaylist> findByMemberMemberIdAndMemberEmotion(Long memberId, Emotion memberEmotion, Pageable pageable);
     List<MemberPlaylist> findByMemberMemberId(Long memberId);
+
+    MemberPlaylist findByDiary(Diary diary);
 }

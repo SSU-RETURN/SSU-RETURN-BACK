@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.app.demo.dto.request.DiaryRequestDTO;
 import com.app.demo.entity.*;
 import com.app.demo.entity.enums.Emotion;
+import com.app.demo.entity.mapping.AIPlaylistMusic;
 import com.app.demo.repository.*;
 import com.app.demo.service.*;
 
@@ -29,10 +30,12 @@ public class DiaryServiceImpl implements DiaryService {
     private final MemberPreferenceService memberPreferenceService;
     private final MemberPlaylistService memberPlaylistService;
     private final MemberPlaylistMusicService memberPlaylistMusicService;
+    private final AIPlaylistMusicRepository aiPlaylistMusicRepository;
+    private final MemberPlaylistMusicRepository memberPlaylistMusicRepository;
 
     @Autowired
     public DiaryServiceImpl(DiaryRepository diaryRepository, MemberRepository memberRepository,
-                            AIPlaylistRepository aiPlaylistRepository, MemberPlaylistRepository memberPlaylistRepository, MusicRepository musicRepository, AIPlaylistService aiPlaylistService, AiEmotionService aiEmotionService, AiPlaylistMusicService aiPlaylistMusicService, ChatGPTService chatGPTService, MemberPreferenceService memberPreferenceService, MemberPlaylistService memberPlaylistService, MemberPlaylistMusicService memberPlaylistMusicService, S3ImageService s3ImageService) {
+                            AIPlaylistRepository aiPlaylistRepository, MemberPlaylistRepository memberPlaylistRepository, MusicRepository musicRepository, AIPlaylistService aiPlaylistService, AiEmotionService aiEmotionService, AiPlaylistMusicService aiPlaylistMusicService, ChatGPTService chatGPTService, MemberPreferenceService memberPreferenceService, MemberPlaylistService memberPlaylistService, MemberPlaylistMusicService memberPlaylistMusicService, S3ImageService s3ImageService, AIPlaylistMusicRepository aiPlaylistMusicRepository, MemberPlaylistMusicRepository memberPlaylistMusicRepository) {
         this.diaryRepository = diaryRepository;
         this.memberRepository = memberRepository;
         this.aiPlaylistRepository = aiPlaylistRepository;
@@ -45,6 +48,8 @@ public class DiaryServiceImpl implements DiaryService {
         this.memberPreferenceService = memberPreferenceService;
         this.memberPlaylistService = memberPlaylistService;
         this.memberPlaylistMusicService = memberPlaylistMusicService;
+        this.aiPlaylistMusicRepository = aiPlaylistMusicRepository;
+        this.memberPlaylistMusicRepository = memberPlaylistMusicRepository;
     }
 
     @Override
@@ -103,9 +108,29 @@ public class DiaryServiceImpl implements DiaryService {
         diaryRepository.save(diary);
     }
 
+
+    @Transactional
     @Override
     public void deleteDiary(Long diaryId) {
-        diaryRepository.deleteById(diaryId);
+        Diary diary = diaryRepository.findByDiaryId(diaryId);
+
+        AIPlaylist aiPlaylist = aiPlaylistRepository.findByDiary(diary);
+        aiPlaylistMusicRepository.deleteAllByAiPlaylist(aiPlaylist);
+        aiPlaylist.setMember(null);
+
+
+        MemberPlaylist memberPlaylist = memberPlaylistRepository.findByDiary(diary);
+        memberPlaylistMusicRepository.deleteAllByMemberPlaylist(memberPlaylist);
+        memberPlaylist.setMember(null);
+
+        diary.setMember(null);
+
+        aiPlaylistRepository.delete(aiPlaylist);
+        memberPlaylistRepository.delete(memberPlaylist);
+
+
+        diaryRepository.delete(diary);
+
     }
 
     public List<Diary> getDiariesByMonth(Long memberId, LocalDate yearMonth) {
