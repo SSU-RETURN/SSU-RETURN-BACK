@@ -140,6 +140,8 @@ public class DiaryServiceImpl implements DiaryService {
         return diaryRepository.findByMemberAndWrittenDateBetween(member, startDate, endDate);
     }
 
+
+
     public Diary getDiary(Long diaryId) {
         return diaryRepository.findByDiaryId(diaryId);
     }
@@ -149,6 +151,11 @@ public class DiaryServiceImpl implements DiaryService {
         Diary diary = diaryRepository.findByDiaryId(diaryId);
         AiEmotion aiEmotion = diary.getAiEmotion();
         return aiEmotion;
+    }
+    @Override
+    public Diary getDiaryByMemberDate(Long memberId, LocalDate date){
+        Member member = memberRepository.findByMemberId(memberId)
+        return diaryRepository.findByMemberAndWrittenDate(member, date);
     }
 }
 
