@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface AIPlaylistMusicRepository extends JpaRepository<AIPlaylistMusic, Long> {
     List<AIPlaylistMusic> findByAiPlaylist(AIPlaylist aiPlaylist);
+    void deleteAllByAiPlaylist(AIPlaylist aiPlaylist);
 }

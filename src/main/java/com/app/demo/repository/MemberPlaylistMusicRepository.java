@@ -16,4 +16,5 @@ import java.util.List;
 public interface MemberPlaylistMusicRepository extends JpaRepository<MemberPlaylistMusic, Long> {
     Page<MemberPlaylistMusic> findByMemberPlaylistMemberPlaylistId(Long memberPlaylistId, Pageable pageable);
     List<MemberPlaylistMusic> findByMemberPlaylistMemberPlaylistId(Long memberPlaylistId);
+    void deleteAllByMemberPlaylist(MemberPlaylist memberPlaylist);
 }
