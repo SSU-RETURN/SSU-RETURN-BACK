@@ -34,7 +34,7 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
                 .preferenceHappy(requestDTO.getPreferenceHappy())
                 .preferenceAngry(requestDTO.getPreferenceAngry())
                 .preferenceRomance(requestDTO.getPreferenceRomance())
-                .preferenceSurprise(requestDTO.getPreferenceSurprise())
+                .preferenceAnxiety(requestDTO.getPreferenceAnxiety())
                 .build();
         return memberPreferenceRepository.save(memberPreference);
     }
@@ -49,7 +49,7 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
                 .genreFirst(requestDTO.getGenreFirst())
                 .genreSecond(requestDTO.getGenreSecond())
                 .genreThird(requestDTO.getGenreThird())
-                .preferenceSurprise(requestDTO.getPreferenceSurprise())
+                .preferenceAnxiety(requestDTO.getPreferenceAnxiety())
                 .preferenceRomance(requestDTO.getPreferenceRomance())
                 .preferenceAngry(requestDTO.getPreferenceAngry())
                 .preferenceHappy(requestDTO.getPreferenceHappy())
@@ -80,7 +80,7 @@ public class MemberPreferenceServiceImpl implements MemberPreferenceService{
             case "SAD" -> memberPreference.getPreferenceSad();
             case "ANGRY" -> memberPreference.getPreferenceAngry();
             case "ROMANCE" -> memberPreference.getPreferenceRomance();
-            default -> memberPreference.getPreferenceSurprise();
+            default -> memberPreference.getPreferenceAnxiety();
         };
     }
 

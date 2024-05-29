@@ -52,7 +52,7 @@ public class MemberPreference {
     private Preference preferenceRomance;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "prefer_Surprise")
-    private Preference preferenceSurprise;
+    @Column(name = "prefer_anxiety")
+    private Preference preferenceAnxiety;
 
 }
