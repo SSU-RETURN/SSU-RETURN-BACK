@@ -82,7 +82,7 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
             throw new UserException(ErrorStatus.PREFERENCE_PLAYLIST_NOT_FOUND);
         }
         if (memberPreferencePlaylist.getLastUpdateDate().isEqual(requestDTO.getDate())) {
-            throw new UserException(ErrorStatus.PREFERENCE_PLAYLIST_ALREADY_UPDATED);
+            return Boolean.FALSE;
         } else {
             MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
 

@@ -61,8 +61,7 @@ public class MemberPreferencePlaylistController {
         if (isUpdated) {
             return ResponseEntity.ok(BaseResponse.onSuccess("갱신 성공"));
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
-                    .body(BaseResponse.onSuccess("이미 최신 상태입니다"));
+            return ResponseEntity.ok(BaseResponse.onFailure("200", "데이터가 최신 상태입니다", null));
         }
 
     }
