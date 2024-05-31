@@ -89,9 +89,13 @@ public class DiaryController {
     public BaseResponse<DiaryResponseDTO.DiaryIdDTO> createDiary(@RequestPart("diary") DiaryRequestDTO.CreateDiaryRequestDTO requestDTO,
                                                                  @RequestPart(value = "image", required = false) MultipartFile image) {
         String imageUrl = (image != null) ? s3ImageService.upload(image) : null;
-        Diary diary = diaryService.createDiary(requestDTO, imageUrl);
-        DiaryResponseDTO.DiaryIdDTO responseDTO = DiaryConverter.toDiaryIdDTO(diary);
-        return BaseResponse.onSuccess(responseDTO);
+        if(diaryService.getDiaryByMemberDate(requestDTO.getMemberId(), requestDTO.getWrittenDate()) != null){
+            return BaseResponse.onFailure("COMMON400", "이미 오늘의 일기가 존재합니다", null);
+        }else{
+            Diary diary = diaryService.createDiary(requestDTO, imageUrl);
+            DiaryResponseDTO.DiaryIdDTO responseDTO = DiaryConverter.toDiaryIdDTO(diary);
+            return BaseResponse.onSuccess(responseDTO);
+        }
     }
 
     @ResponseStatus(code = HttpStatus.OK)

@@ -52,6 +52,8 @@ public class DiaryServiceImpl implements DiaryService {
         this.memberPlaylistMusicRepository = memberPlaylistMusicRepository;
     }
 
+
+    @Transactional
     @Override
     public Diary createDiary(DiaryRequestDTO.CreateDiaryRequestDTO requestDTO, String imageUrl) {
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
