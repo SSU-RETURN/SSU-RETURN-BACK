@@ -49,6 +49,9 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
     @Override
     public MemberPreferencePlaylist createMemberPreferencePlaylist(Long memberId){
         Member member = memberRepository.findByMemberId(memberId);
+        if(member == null){
+            throw new UserException(ErrorStatus.USER_NOT_FOUND);
+        }
         MemberPreferencePlaylist memberPreferencePlaylist = MemberPreferencePlaylist.builder()
                 .member(member)
                 .lastUpdateDate(LocalDate.now())
@@ -71,11 +74,15 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
     @Override
     public Boolean updateMemberPreferencePlaylist(MemberPreferencePlaylistRequestDTO.UpdateMemberPreferencePlaylistDTO requestDTO) {
         Member member = memberRepository.findByMemberId(requestDTO.getMemberId());
-
+        if(member == null){
+            throw new UserException(ErrorStatus.USER_NOT_FOUND);
+        }
         MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistRepository.findByMember(member);
-
+        if (memberPreferencePlaylist == null) {
+            throw new UserException(ErrorStatus.PREFERENCE_PLAYLIST_NOT_FOUND);
+        }
         if (memberPreferencePlaylist.getLastUpdateDate().isEqual(requestDTO.getDate())) {
-            return Boolean.FALSE;
+            throw new UserException(ErrorStatus.PREFERENCE_PLAYLIST_ALREADY_UPDATED);
         } else {
             MemberPreference memberPreference = memberPreferenceRepository.findByMember(member);
 
@@ -96,8 +103,14 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
     @Override
     public List<Music> getMemberPreferencePlaylistByMember(Long memberId){
         Member member = memberRepository.findByMemberId(memberId);
-        MemberPreferencePlaylist preferencePlaylist = memberPreferencePlaylistRepository.findByMember(member);
-        List<MemberPreferencePlaylistMusic> memberPreferencePlaylistMusicList = memberPreferencePlaylistMusicRepository.findByMemberPreferencePlaylist(preferencePlaylist);
+        if(member == null){
+            throw new UserException(ErrorStatus.USER_NOT_FOUND);
+        }
+        MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistRepository.findByMember(member);
+        if (memberPreferencePlaylist == null) {
+            throw new UserException(ErrorStatus.PREFERENCE_PLAYLIST_NOT_FOUND);
+        }
+        List<MemberPreferencePlaylistMusic> memberPreferencePlaylistMusicList = memberPreferencePlaylistMusicRepository.findByMemberPreferencePlaylist(memberPreferencePlaylist);
         List<Music> musics = new ArrayList<>();
         for(MemberPreferencePlaylistMusic memberPreferencePlaylistMusic : memberPreferencePlaylistMusicList){
             musics.add(memberPreferencePlaylistMusic.getMusic());
