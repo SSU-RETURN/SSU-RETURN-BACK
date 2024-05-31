@@ -43,7 +43,13 @@ public enum ErrorStatus implements BaseErrorCode {
     RECREATION_NOT_FOUND(HttpStatus.NOT_FOUND, "SEARCH_001", "검색 결과가 존재하지 않습니다."),
 
     //Diary 관련
-    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REV_001", "존재하지 않는 일기입니다.");
+    REVIEW_NOT_FOUND(HttpStatus.NOT_FOUND, "REV_001", "존재하지 않는 일기입니다."),
+
+    //Playlist 관련
+    PREFERENCE_PLAYLIST_ALREADY_UPDATED(HttpStatus.BAD_REQUEST, "PLY_001", "취향플레이리스트가 이미 업데이트 되었습니다."),
+    PREFERENCE_PLAYLIST_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLY_001", "취향플레이리스트가 존재하지 않습니다.");
+
+
     private final HttpStatus httpStatus;
     private final String code;
     private final String message;
