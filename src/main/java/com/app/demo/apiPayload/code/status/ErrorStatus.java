@@ -47,7 +47,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Playlist 관련
     PREFERENCE_PLAYLIST_ALREADY_UPDATED(HttpStatus.BAD_REQUEST, "PLY_001", "취향플레이리스트가 이미 업데이트 되었습니다."),
-    PREFERENCE_PLAYLIST_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLY_001", "취향플레이리스트가 존재하지 않습니다.");
+    PREFERENCE_PLAYLIST_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLY_002", "취향플레이리스트가 존재하지 않습니다."),
+    PREFERENCE_PLAYLIST_EXISTS(HttpStatus.BAD_REQUEST, "PLY_003", "사용자의 취향플레이리스트가 존재합니다.");
 
 
     private final HttpStatus httpStatus;

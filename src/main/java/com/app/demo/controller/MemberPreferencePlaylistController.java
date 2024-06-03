@@ -41,15 +41,10 @@ public class MemberPreferencePlaylistController {
     @Operation(summary = "취향플리생성", description = "취향플리생성 API입니다")
     @ApiResponses({@ApiResponse(responseCode = "COMMON201", description="등록성공")})
     @PostMapping("/preference/create")
-    public BaseResponse<MemberPreferencePlaylistResponseDTO.CreateMemberPreferencePlaylistDTO> createMemberPreferencePlaylist(@RequestParam Long memberId){
-
-        if(!memberPreferencePlaylistService.getMemberPreferencePlaylistByMember(memberId).isEmpty()){
-            return BaseResponse.onFailure("COMMON400", "이미 취향플레이리스트가 존재합니다", null);
-        }else {
-            MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistService.createMemberPreferencePlaylist(memberId);
-            MemberPreferencePlaylistResponseDTO.CreateMemberPreferencePlaylistDTO responseDTO = MemberPreferencePlaylistConverter.toCreateDTO(memberPreferencePlaylist);
-            return BaseResponse.onSuccess(responseDTO);
-        }
+    public BaseResponse<MemberPreferencePlaylistResponseDTO.CreateMemberPreferencePlaylistDTO> createMemberPreferencePlaylist(@RequestParam Long memberId) {
+        MemberPreferencePlaylist memberPreferencePlaylist = memberPreferencePlaylistService.createMemberPreferencePlaylist(memberId);
+        MemberPreferencePlaylistResponseDTO.CreateMemberPreferencePlaylistDTO responseDTO = MemberPreferencePlaylistConverter.toCreateDTO(memberPreferencePlaylist);
+        return BaseResponse.onSuccess(responseDTO);
     }
 
     @ResponseStatus(code = HttpStatus.OK)
