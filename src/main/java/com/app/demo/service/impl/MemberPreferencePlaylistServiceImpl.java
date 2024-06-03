@@ -52,6 +52,10 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
         if(member == null){
             throw new UserException(ErrorStatus.USER_NOT_FOUND);
         }
+        MemberPreferencePlaylist memberPreferencePlaylistPre = memberPreferencePlaylistRepository.findByMember(member);
+        if(memberPreferencePlaylistPre != null){
+            throw new UserException(ErrorStatus.PREFERENCE_PLAYLIST_EXISTS);
+        }
         MemberPreferencePlaylist memberPreferencePlaylist = MemberPreferencePlaylist.builder()
                 .member(member)
                 .lastUpdateDate(LocalDate.now())
