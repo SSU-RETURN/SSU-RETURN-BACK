@@ -54,7 +54,7 @@ public class RecommendPageController {
             return BaseResponse.onFailure("COMMON404", "일기가없습니다", null);
         }else{
             Emotion emotion = diary.getMemberEmotion();
-            List<Music> memberEmotionPlaylist = memberPlaylistservice.getMemberPlaylistListByEmotion(memberId,emotion,1);
+            List<Music> memberEmotionPlaylist = memberPlaylistservice.getMemberPlaylistListByEmotion(memberId,emotion,0);
             List<Music> aiPlaylist = aiPlaylistService.getAiPlaylist(diary.getDiaryId());
             RecommendPageResponseDTO.RecommendPageDTO responseDTO = RecommendPageConverter.toRecommendPageDTO(aiPlaylist, memberEmotionPlaylist);
             return BaseResponse.onSuccess(responseDTO);
