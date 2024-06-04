@@ -98,7 +98,7 @@ public class MemberPreferencePlaylistServiceImpl implements MemberPreferencePlay
                         .music(music)
                         .build());
             }
-            memberPreferencePlaylist.setLastUpdateDate(LocalDate.now()); // Update the last update date
+            memberPreferencePlaylist.setLastUpdateDate(requestDTO.getDate()); // Update the last update date
             memberPreferencePlaylistRepository.save(memberPreferencePlaylist); // Save the updated playlist
             return Boolean.TRUE;
         }
