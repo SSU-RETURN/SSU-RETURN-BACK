@@ -14,5 +14,6 @@ public class RecommendPageResponseDTO {
     public static class RecommendPageDTO{
         private List<Music> aiPlaylist;
         private List<Music> memberEmotionPlaylist;
+        private Long diaryId;
     }
 }
