@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendPageConverter {
-    public static RecommendPageResponseDTO.RecommendPageDTO toRecommendPageDTO(List<Music> aiPlaylist, List<Music> memberEmotionPlaylist){
+    public static RecommendPageResponseDTO.RecommendPageDTO toRecommendPageDTO(List<Music> aiPlaylist, List<Music> memberEmotionPlaylist, Long diaryId){
         return RecommendPageResponseDTO.RecommendPageDTO.builder()
                 .aiPlaylist(aiPlaylist)
                 .memberEmotionPlaylist(memberEmotionPlaylist)
+                .diaryId(diaryId)
                 .build();
     }
     public static RecommendPageResponseDTO.RecommendPageDTO toNullDTO(){

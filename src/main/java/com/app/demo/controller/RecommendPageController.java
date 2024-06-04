@@ -56,7 +56,8 @@ public class RecommendPageController {
             Emotion emotion = diary.getMemberEmotion();
             List<Music> memberEmotionPlaylist = memberPlaylistservice.getMemberPlaylistListByEmotion(memberId,emotion,0);
             List<Music> aiPlaylist = aiPlaylistService.getAiPlaylist(diary.getDiaryId());
-            RecommendPageResponseDTO.RecommendPageDTO responseDTO = RecommendPageConverter.toRecommendPageDTO(aiPlaylist, memberEmotionPlaylist);
+            Long diaryId = diary.getDiaryId();
+            RecommendPageResponseDTO.RecommendPageDTO responseDTO = RecommendPageConverter.toRecommendPageDTO(aiPlaylist, memberEmotionPlaylist, diaryId);
             return BaseResponse.onSuccess(responseDTO);
         }
     }
