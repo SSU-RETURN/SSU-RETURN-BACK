@@ -37,8 +37,8 @@ public class ChatGPTServiceImpl implements ChatGPTService {
 
     // 추천음악 저장까지 로직
     @Override
-    public List<Music> processMusicRecommendations(String tagString, String tagStringEmotion, String preferString) {
-        String prompt = createPrompt(tagString, tagStringEmotion, preferString);
+    public List<Music> processMusicRecommendations(String tagString, String tagStringEmotion, String preferString, String aiEmotionHigh) {
+        String prompt = createPrompt(tagString, tagStringEmotion, preferString, aiEmotionHigh);
         String response = chatGPT(prompt);
         List<MusicRequestDTO.MusicContentDTO> searchMusicDTOs = parseResponse(response);
 
@@ -47,11 +47,11 @@ public class ChatGPTServiceImpl implements ChatGPTService {
     }
 
     @Override
-    public String createPrompt(String tagString, String tagStringEmotion, String preferString) {
+    public String createPrompt(String tagString, String tagStringEmotion, String preferString, String aiEmotionHigh) {
         String prompt = "";
         prompt = String.format(
-                "제가 '%s' 감정을 느끼고 있을 때 들으면 좋은 노래가 있을까요? 저는 그 감정을 느낄 때 평소에 '%s'한 음악을 즐겨 듣습니다. '%s'의 음악을 즐깁니다. '%s' 보다는 '%s'를 조금 더 중점으로 하여 좋은 음악 20개 추천 부탁드립니다. 되도록 한국 음악으로 추천해주세요. 노래는 아래의 형식으로 추천해주세요 (노래 하나의 정보는 { } 묶습니다. 줄바꿈 없이) : [{'가수명', '노래제목'},{'가수명', '노래제목'}, ... ,{'가수명', '노래제목'},{'가수명', '노래제목'}]",
-                tagString, tagStringEmotion, preferString, preferString, tagString);
+                "제가 '%s' '%s' 감정을 느끼고 있을 때 들으면 좋은 노래가 있을까요? 저는 '%s'을 느낄 때 평소에 '%s'한 음악을 즐겨 듣습니다. '%s'의 음악을 즐깁니다. '%s' 보다는 '%s'를 조금 더 중점으로 하여 좋은 음악 20개 추천 부탁드립니다. 되도록 한국 음악으로 추천해주세요. 노래는 아래의 형식으로 추천해주세요 (노래 하나의 정보는 { } 묶습니다. 줄바꿈 없이) : [{'가수명', '노래제목'},{'가수명', '노래제목'}, ... ,{'가수명', '노래제목'},{'가수명', '노래제목'}]",
+                tagString, aiEmotionHigh, tagString, tagStringEmotion, preferString, preferString, tagString);
         return prompt;
     }
 

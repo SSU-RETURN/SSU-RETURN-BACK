@@ -61,11 +61,15 @@ public class DiaryServiceImpl implements DiaryService {
 
         //Bert
         AiEmotion aiEmotion = aiEmotionService.getAiEmotion(requestDTO.getContent());
+        //Bert 결과 중 가장 높은 값
+        aiEmotion.EmotionTracker(aiEmotion.getSad(), aiEmotion.getHappy(), aiEmotion.getAngry(), aiEmotion.getSurprise());
+        String aiEmotionHigh = aiEmotion.findDominantEmotion();
+        //Ber
         //chatGPT + 추천음악 저장
         String preference = String.valueOf(memberPreferenceService.getMemberPreferenceForGPT(member, requestDTO.getMemberEmotion()));
         MemberPreference memberPreference = memberPreferenceService.getMemberPreferenceByMemberId(member.getMemberId());
         String genre = String.join(String.valueOf(memberPreference.getGenreFirst()),",",String.valueOf(memberPreference.getGenreSecond()));
-        List<Music> musicList= chatGPTService.processMusicRecommendations(String.valueOf(requestDTO.getMemberEmotion()), preference, genre);
+        List<Music> musicList= chatGPTService.processMusicRecommendations(String.valueOf(requestDTO.getMemberEmotion()), preference, genre, aiEmotionHigh);
         //aiPlaylist 저장
         AIPlaylist aiPlaylist = aiPlaylistService.createAiPlaylist(member.getMemberId(), requestDTO.getWrittenDate());
         aiPlaylistMusicService.setAiPlaylistMusic(musicList, aiPlaylist);

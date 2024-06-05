@@ -6,8 +6,8 @@ import com.app.demo.entity.Music;
 import java.util.List;
 
 public interface ChatGPTService {
-    public List<Music> processMusicRecommendations(String tagString, String tagStringEmotion, String preferString);
-    public String createPrompt(String tagString, String tagStringEmotion, String preferString);
+    public List<Music> processMusicRecommendations(String tagString, String tagStringEmotion, String preferString, String aiEmotionHigh);
+    public String createPrompt(String tagString, String tagStringEmotion, String preferString, String aiEmotionHigh);
     public List<Music> processMusicRecommendations(String preferString);
     public String createPrompt(String preferString);
 
