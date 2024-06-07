@@ -20,9 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MemberPlaylistServiceImpl implements MemberPlaylistService {
@@ -67,15 +65,16 @@ public class MemberPlaylistServiceImpl implements MemberPlaylistService {
         Page<MemberPlaylist> memberPlaylistPage = memberPlaylistRepository.findByMemberMemberIdAndMemberEmotion(memberId, memberEmotion, pageable);
 
 
-        List<Music> musicList = new ArrayList<>();
+        Set<Music> musicSet = new LinkedHashSet<>();
         for(MemberPlaylist memberPlaylists : memberPlaylistPage.getContent()) {
             List<MemberPlaylistMusic> memberPlaylistMusic = memberPlaylistMusicRepository.findByMemberPlaylistMemberPlaylistId(memberPlaylists.getMemberPlaylistId());
             for (MemberPlaylistMusic musics : memberPlaylistMusic) {
                 Optional<Music> music = musicRepository.findById(musics.getMusic().getId());
-                music.ifPresent(musicList::add);
+                music.ifPresent(musicSet::add);
             }
         }
-        return musicList;
+
+        return new ArrayList<>(musicSet);
     }
 
     @Override
